@@ -9,7 +9,8 @@
     "authors": [
         {
             "name": "Peter Loecker",
-            "email": "peter.loecker@live.at"
+            "email": "peter.loecker@live.at",
+            "role": "Developer"
         }
     ],
     "minimum-stability": "dev",
