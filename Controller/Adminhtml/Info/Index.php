@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 
 namespace PeterBrain\Core\Controller\Adminhtml\Info;
 
@@ -22,7 +18,7 @@ class Index extends Action implements HttpGetActionInterface
     /**
      * @var PageFactory
      */
-    protected $resultPageFactory;
+    protected $_resultPageFactory;
 
     /**
      * Index constructor.
@@ -36,7 +32,7 @@ class Index extends Action implements HttpGetActionInterface
     ) {
         parent::__construct($context);
 
-        $this->resultPageFactory = $resultPageFactory;
+        $this->_resultPageFactory = $resultPageFactory;
     }
 
     /**
@@ -46,7 +42,7 @@ class Index extends Action implements HttpGetActionInterface
      */
     public function execute()
     {
-        $resultPage = $this->resultPageFactory->create();
+        $resultPage = $this->_resultPageFactory->create();
         $resultPage->setActiveMenu(static::MENU_ID);
         $resultPage->getConfig()->getTitle()->prepend(__('Info'));
 

@@ -4,7 +4,7 @@
         <tab id="peterbrain" translate="label" sortOrder="999" class="peterbrain-extensions">
             <label>PeterBrain Extensions</label>
         </tab>
-        <section id="pb_core" translate="label" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="peterbrain_core" translate="label" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Core</label>
             <tab>peterbrain</tab>
@@ -17,11 +17,6 @@
                     <backend_model>PeterBrain\Core\Model\Config\Backend\Menu</backend_model>
                     <comment>If enabled, the PeterBrain menu will be displayed on the admin main navigation. All eligible PeterBrain module menus will be displayed there.</comment>
                 </field>
-                <!--<field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Enable Module</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Select Yes to enable modal output.</comment>
-                </field>-->
             </group>
         </section>
     </system>
