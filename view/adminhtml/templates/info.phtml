@@ -1,1 +1,9 @@
-<p>Developer Information</p>
+<?php $developerHelper = $this->helper('PeterBrain\Core\Helper\Developer'); ?>
+
+<h2>System Information</h2>
+<p>Extension developer: <a href="https://github.com/PeterBrain" title="Link to Github profile">PeterBrain</a></p>
+<p>Module version: <?php /* @noEscape */ echo $developerHelper->getModuleVersion(); ?></p>
+<p>Magento version: <?php /* @noEscape */ echo $developerHelper->getMagentoEdition(); ?></p>
+<p>Magento mode: <?php /* @noEscape */ echo $developerHelper->getMagentoMode(); ?></p>
+<p>Magento path: <?php /* @noEscape */ echo $developerHelper->getMagentoPath(); ?></p>
+<p>PHP version: <?php /* @noEscape */ echo phpversion(); ?></p>
