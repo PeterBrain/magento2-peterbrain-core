@@ -1,9 +1,19 @@
 <?php $developerHelper = $this->helper('PeterBrain\Core\Helper\Developer'); ?>
 
 <h2>System Information</h2>
+<h3>Module</h3>
 <p>Extension developer: <a href="https://github.com/PeterBrain" title="Link to Github profile">PeterBrain</a></p>
 <p>Module version: <?php /* @noEscape */ echo $developerHelper->getModuleVersion(); ?></p>
+<h3>Magento</h3>
 <p>Magento version: <?php /* @noEscape */ echo $developerHelper->getMagentoEdition(); ?></p>
 <p>Magento mode: <?php /* @noEscape */ echo $developerHelper->getMagentoMode(); ?></p>
 <p>Magento path: <?php /* @noEscape */ echo $developerHelper->getMagentoPath(); ?></p>
+<h3>PHP</h3>
 <p>PHP version: <?php /* @noEscape */ echo phpversion(); ?></p>
+<p>Memory limit: <?php /* @noEscape */ echo ini_get('memory_limit'); ?> – max amount of memory a script may consume. This value should be at least as big as post_max_size</p>
+<p>Max execution time: <?php /* @noEscape */ echo ini_get('max_execution_time'); ?> – max execution time of each script, in seconds</p>
+<p>Max input time: <?php /* @noEscape */ echo ini_get('max_input_time'); ?> – max amount of time each script may spend parsing request data</p>
+<p>Max file uploads: <?php /* @noEscape */ echo ini_get('max_file_uploads'); ?> – sets the maximum number of files that can be uploaded at a time</p>
+<p>Max file size: <?php /* @noEscape */ echo ini_get('upload_max_filesize'); ?> – controls the maximum size of each file</p>
+<p>Max POST size: <?php /* @noEscape */ echo ini_get('post_max_size'); ?> – max size of POST data that PHP will accept. This value should be at least as big as upload_max_filesize * max_file_uploads</p>
+<p>Max session lifetime: <?php /* @noEscape */ echo ini_get('session.gc_maxlifetime'); ?> – specifies the number of seconds after which data will be seen as 'garbage' and potentially cleaned up. Be aware that the session lifetime value should be greater than Magento admin session lifetime unless you use Redis for session cache.</p>
