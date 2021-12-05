@@ -13,12 +13,12 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * Class AbstractData
+ * Class Data
  * @package PeterBrain\Core\Helper
  */
-class AbstractData extends AbstractHelper
+class Data extends AbstractHelper
 {
-    const CONFIG_MODULE_PATH = 'pb_core';
+    const CONFIG_MODULE_PATH = 'peterbrain_core';
 
     /**
      * @type StoreManagerInterface
@@ -57,16 +57,6 @@ class AbstractData extends AbstractHelper
 
         parent::__construct($context);
     }
-
-    /**
-     * @param null $storeId
-     *
-     * @return bool
-     */
-    /*public function isEnabled($storeId = null)
-    {
-        return $this->getConfigGeneral('enabled', $storeId);
-    }*/
 
     /**
      * @param string $code

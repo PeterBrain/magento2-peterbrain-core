@@ -25,7 +25,7 @@
                     sortOrder="10"
                     dependsOnModule="PeterBrain_Core"
                     parent="PeterBrain_Core::core"
-                    action="adminhtml/system_config/edit/section/pb_core"
+                    action="adminhtml/system_config/edit/section/peterbrain_core"
                     resource="PeterBrain_Core::config"
                 />
                 <add

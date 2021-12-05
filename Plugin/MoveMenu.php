@@ -3,7 +3,7 @@
 namespace PeterBrain\Core\Plugin;
 
 use Magento\Backend\Model\Menu\Builder\AbstractCommand;
-use PeterBrain\Core\Helper\AbstractData;
+use PeterBrain\Core\Helper\Data;
 
 /**
  * Class MoveMenu
@@ -14,16 +14,16 @@ class MoveMenu
     const MENU_ID = 'PeterBrain_Core::peterbrain';
 
     /**
-     * @var AbstractData
+     * @var Data
      */
     protected $helper;
 
     /**
      * MoveMenu constructor.
      *
-     * @param AbstractData $helper
+     * @param Data $helper
      */
-    public function __construct(AbstractData $helper)
+    public function __construct(Data $helper)
     {
         $this->helper = $helper;
     }
