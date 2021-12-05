@@ -33,7 +33,6 @@ class Version extends Field
      */
     public function render(AbstractElement $element)
     {
-        // Remove scope label
         $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
         return parent::render($element);
     }
@@ -44,10 +43,6 @@ class Version extends Field
      */
     protected function _getElementHtml(AbstractElement $element)
     {
-        //$isElementIdModuleName = (strpos($element->getOriginalData('id'), 'PeterBrain_') === 0);
-        //$moduleName = $isElementIdModuleName ? $element->getOriginalData('id') : $this->getModuleName();
-
         return $this->_moduleInfoHelper->getModuleVersion();
-
     }
 }

@@ -36,10 +36,6 @@
                     <label>Configuration</label>
                     <frontend_model>PeterBrain\Core\Block\Adminhtml\System\Config\Form\Field\Link</frontend_model>
                 </field>
-                <!--<field id="info" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Module</label>
-                    <frontend_model>PeterBrain\Core\Block\Adminhtml\System\Config\Field\Information</frontend_model>
-                </field>-->
             </group>
         </section>
     </system>

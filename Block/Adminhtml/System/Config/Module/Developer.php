@@ -33,7 +33,6 @@ class Developer extends Field
      */
     public function render(AbstractElement $element)
     {
-        // Remove scope label
         $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
         return parent::render($element);
     }
@@ -44,10 +43,6 @@ class Developer extends Field
      */
     protected function _getElementHtml(AbstractElement $element)
     {
-        //$isElementIdModuleName = (strpos($element->getOriginalData('id'), 'PeterBrain_') === 0);
-        //$moduleName = $isElementIdModuleName ? $element->getOriginalData('id') : $this->getModuleName();
-
         return '<a href="https://github.com/PeterBrain" title="Link to Github profile">PeterBrain</a>';
-
     }
 }

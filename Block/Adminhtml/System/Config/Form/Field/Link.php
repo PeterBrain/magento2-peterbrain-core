@@ -8,7 +8,6 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 
 class Link extends Field
 {
-
     /**
      * @param Context $context
      * @param array $data
@@ -28,7 +27,6 @@ class Link extends Field
      */
     public function render(AbstractElement $element)
     {
-        // Remove scope label
         $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
         return parent::render($element);
     }
@@ -38,7 +36,6 @@ class Link extends Field
      *
      * @param  AbstractElement $element
      * @return string
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function _getElementHtml(AbstractElement $element)
     {
