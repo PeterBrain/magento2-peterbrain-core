@@ -1,19 +1,96 @@
-<?php $developerHelper = $this->helper('PeterBrain\Core\Helper\Developer'); ?>
+<?php $moduleInfoHelper = $this->helper('PeterBrain\Core\Helper\ModuleInfo'); ?>
+
+<style>
+table, th, td {
+  padding: 5px 0.5em;
+}
+</style>
 
 <h2>System Information</h2>
 <h3>Module</h3>
-<p>Extension developer: <a href="https://github.com/PeterBrain" title="Link to Github profile">PeterBrain</a></p>
-<p>Module version: <?php /* @noEscape */ echo $developerHelper->getModuleVersion(); ?></p>
+<table>
+  <!--<thead>
+    <tr>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>-->
+  <tbody>
+    <tr>
+      <td>Extension developer:</td>
+      <td><a href="https://github.com/PeterBrain" title="Link to Github profile">PeterBrain</a></td>
+      <td><a href="https://paypal.me/peterbrain?country.x=AT&locale.x=de_DE" title="Buy me a coffe">Buy me a coffee</a></td>
+    </tr>
+    <tr>
+      <td>Module version:</td>
+      <td><?php /* @noEscape */ echo $moduleInfoHelper->getModuleVersion(); ?></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 <h3>Magento</h3>
-<p>Magento version: <?php /* @noEscape */ echo $developerHelper->getMagentoEdition(); ?></p>
-<p>Magento mode: <?php /* @noEscape */ echo $developerHelper->getMagentoMode(); ?></p>
-<p>Magento path: <?php /* @noEscape */ echo $developerHelper->getMagentoPath(); ?></p>
+<table>
+  <tbody>
+    <tr>
+      <td>Magento edition:</td>
+      <td><?php /* @noEscape */ echo ucfirst($moduleInfoHelper->getMagentoEdition()); ?></td>
+    </tr>
+    <tr>
+      <td>Magento version:</td>
+      <td><?php /* @noEscape */ echo $moduleInfoHelper->getMagentoVersion(); ?></td>
+    </tr>
+    <tr>
+      <td>Magento mode:</td>
+      <td><?php /* @noEscape */ echo ucfirst($moduleInfoHelper->getMagentoMode()); ?></td>
+    </tr>
+    <tr>
+      <td>Magento path:</td>
+      <td><?php /* @noEscape */ echo $moduleInfoHelper->getMagentoPath(); ?></td>
+    </tr>
+  </tbody>
+</table>
 <h3>PHP</h3>
-<p>PHP version: <?php /* @noEscape */ echo phpversion(); ?></p>
-<p>Memory limit: <?php /* @noEscape */ echo ini_get('memory_limit'); ?> – max amount of memory a script may consume. This value should be at least as big as post_max_size</p>
-<p>Max execution time: <?php /* @noEscape */ echo ini_get('max_execution_time'); ?> – max execution time of each script, in seconds</p>
-<p>Max input time: <?php /* @noEscape */ echo ini_get('max_input_time'); ?> – max amount of time each script may spend parsing request data</p>
-<p>Max file uploads: <?php /* @noEscape */ echo ini_get('max_file_uploads'); ?> – sets the maximum number of files that can be uploaded at a time</p>
-<p>Max file size: <?php /* @noEscape */ echo ini_get('upload_max_filesize'); ?> – controls the maximum size of each file</p>
-<p>Max POST size: <?php /* @noEscape */ echo ini_get('post_max_size'); ?> – max size of POST data that PHP will accept. This value should be at least as big as upload_max_filesize * max_file_uploads</p>
-<p>Max session lifetime: <?php /* @noEscape */ echo ini_get('session.gc_maxlifetime'); ?> – specifies the number of seconds after which data will be seen as 'garbage' and potentially cleaned up. Be aware that the session lifetime value should be greater than Magento admin session lifetime unless you use Redis for session cache.</p>
+<table>
+  <tbody>
+    <tr>
+      <td>PHP version:</td>
+      <td><?php /* @noEscape */ echo phpversion(); ?></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Memory limit:</td>
+      <td><?php /* @noEscape */ echo ini_get('memory_limit'); ?></td>
+      <td>max amount of memory a script may consume. This value should be at least as big as post_max_size</td>
+    </tr>
+    <tr>
+      <td>Max execution time:</td>
+      <td><?php /* @noEscape */ echo ini_get('max_execution_time'); ?></td>
+      <td>max execution time of each script, in seconds</td>
+    </tr>
+    <tr>
+      <td>Max input time:</td>
+      <td><?php /* @noEscape */ echo ini_get('max_input_time'); ?></td>
+      <td>max amount of time each script may spend parsing request data</td>
+    </tr>
+    <tr>
+      <td>Max file uploads:</td>
+      <td><?php /* @noEscape */ echo ini_get('max_file_uploads'); ?></td>
+      <td>sets the maximum number of files that can be uploaded at a time</td>
+    </tr>
+    <tr>
+      <td>Max file size:</td>
+      <td><?php /* @noEscape */ echo ini_get('upload_max_filesize'); ?></td>
+      <td>controls the maximum size of each file</td>
+    </tr>
+    <tr>
+      <td>Max POST size:</td>
+      <td><?php /* @noEscape */ echo ini_get('post_max_size'); ?></td>
+      <td>max size of POST data that PHP will accept. This value should be at least as big as upload_max_filesize * max_file_uploads</td>
+    </tr>
+    <tr>
+      <td>Max session lifetime:</td>
+      <td><?php /* @noEscape */ echo ini_get('session.gc_maxlifetime'); ?></td>
+      <td>specifies the number of seconds after which data will be seen as 'garbage' and potentially cleaned up. Be aware that the session lifetime value should be greater than Magento admin session lifetime unless you use Redis for session cache.</td>
+    </tr>
+  </tbody>
+</table>

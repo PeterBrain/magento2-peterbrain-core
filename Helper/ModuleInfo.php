@@ -13,7 +13,7 @@ use Magento\Framework\Filesystem\DirectoryList;
  * Class Data
  * @package PeterBrain\Core\Helper
  */
-class Developer extends AbstractHelper
+class ModuleInfo extends AbstractHelper
 {
     const MODULE_NAME = 'PeterBrain_Core';
     const CONFIG_MODULE_PATH = 'peterbrain_core';
@@ -55,13 +55,23 @@ class Developer extends AbstractHelper
     }
 
     /**
-     * get Magento version
+     * get Magento edition
      *
      * @return string
      */
     public function getMagentoEdition()
     {
-        return $this->_productMetaData->getEdition() . ' ( ' . $this->_productMetaData->getVersion() . ' )';
+        return $this->_productMetaData->getEdition();
+    }
+
+    /**
+     * get Magento version
+     *
+     * @return string
+     */
+    public function getMagentoVersion()
+    {
+        return $this->_productMetaData->getVersion();
     }
 
     /**
