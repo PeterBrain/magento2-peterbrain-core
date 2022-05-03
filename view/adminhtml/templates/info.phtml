@@ -1,8 +1,21 @@
 <?php $moduleInfoHelper = $this->helper('PeterBrain\Core\Helper\ModuleInfo'); ?>
 
 <style>
-table, th, td {
-  padding: 5px 0.5em;
+table {
+  margin: 0 0 2em;
+}
+
+th, td {
+  vertical-align: top;
+  padding: 0 0.5em 0.75em;
+}
+
+td:first-child {
+  white-space: nowrap;
+}
+
+td:nth-child(2) {
+  font-weight: 600;
 }
 </style>
 
@@ -12,11 +25,13 @@ table, th, td {
   <tbody>
     <tr>
       <td>Extension developer:</td>
-      <td><a href="https://github.com/PeterBrain" title="Link to Github profile">PeterBrain</a><br><a href="https://paypal.me/peterbrain?country.x=AT&locale.x=de_DE" title="Buy me a coffe">Buy me a coffee</a></td>
+      <td><a href="https://github.com/PeterBrain" title="Link to GitHub profile">PeterBrain</a></td>
+      <td><a href="https://paypal.me/peterbrain?country.x=AT&locale.x=de_DE" title="Buy me a coffee">Buy me a coffee</a></td>
     </tr>
     <tr>
-      <td>Module version:</td>
+      <td>Core module version:</td>
       <td><?php /* @noEscape */ echo $moduleInfoHelper->getModuleVersion(); ?></td>
+      <td></td>
     </tr>
   </tbody>
 </table>
@@ -24,19 +39,19 @@ table, th, td {
 <table>
   <tbody>
     <tr>
-      <td>Magento edition:</td>
+      <td>Edition:</td>
       <td><?php /* @noEscape */ echo ucfirst($moduleInfoHelper->getMagentoEdition()); ?></td>
     </tr>
     <tr>
-      <td>Magento version:</td>
+      <td>Version:</td>
       <td><?php /* @noEscape */ echo $moduleInfoHelper->getMagentoVersion(); ?></td>
     </tr>
     <tr>
-      <td>Magento mode:</td>
+      <td>Operation mode:</td>
       <td><?php /* @noEscape */ echo ucfirst($moduleInfoHelper->getMagentoMode()); ?></td>
     </tr>
     <tr>
-      <td>Magento path:</td>
+      <td>Installation path:</td>
       <td><?php /* @noEscape */ echo $moduleInfoHelper->getMagentoPath(); ?></td>
     </tr>
   </tbody>
@@ -52,37 +67,57 @@ table, th, td {
     <tr>
       <td>Memory limit:</td>
       <td><?php /* @noEscape */ echo ini_get('memory_limit'); ?></td>
-      <td>max amount of memory a script may consume. This value should be at least as big as post_max_size</td>
+      <td>the maximum amount of memory in bytes that a script is allowed to allocate. This helps prevent poorly written scripts for eating up all available memory on a server. This value should be at least as big as post_max_size</td>
     </tr>
     <tr>
-      <td>Max execution time:</td>
+      <td>Max. execution time:</td>
       <td><?php /* @noEscape */ echo ini_get('max_execution_time'); ?></td>
-      <td>max execution time of each script, in seconds</td>
+      <td>the maximum time in seconds a script is allowed to run before it is terminated by the parser. This helps prevent poorly written scripts from tying up the server.</td>
     </tr>
     <tr>
-      <td>Max input time:</td>
+      <td>Max. input time:</td>
       <td><?php /* @noEscape */ echo ini_get('max_input_time'); ?></td>
-      <td>max amount of time each script may spend parsing request data</td>
+      <td>the maximum time in seconds a script is allowed to parse input data, like POST and GET</td>
     </tr>
     <tr>
-      <td>Max file uploads:</td>
+      <td>Max. input vars:</td>
+      <td><?php /* @noEscape */ echo ini_get('max_input_vars'); ?></td>
+      <td>how many input variables may be accepted (limit is applied to $_GET, $_POST and $_COOKIE superglobal separately). Use of this directive mitigates the possibility of denial of service attacks which use hash collisions.</td>
+    </tr>
+    <tr>
+      <td>Max. file uploads:</td>
       <td><?php /* @noEscape */ echo ini_get('max_file_uploads'); ?></td>
-      <td>sets the maximum number of files that can be uploaded at a time</td>
+      <td>the maximum number of files allowed to be uploaded simultaneously</td>
     </tr>
     <tr>
-      <td>Max file size:</td>
+      <td>Max. file size:</td>
       <td><?php /* @noEscape */ echo ini_get('upload_max_filesize'); ?></td>
-      <td>controls the maximum size of each file</td>
+      <td>the maximum size of an uploaded file in bytes</td>
     </tr>
     <tr>
-      <td>Max POST size:</td>
+      <td>Max. POST size:</td>
       <td><?php /* @noEscape */ echo ini_get('post_max_size'); ?></td>
-      <td>max size of POST data that PHP will accept. This value should be at least as big as upload_max_filesize * max_file_uploads</td>
+      <td>max size of post data allowed. This setting also affects file upload. To upload large files, this value must be greater than pload_max_filesize and should be at least as big as upload_max_filesize * max_file_uploads. Generally speaking, memory_limit should be larger than post_max_size.</td>
     </tr>
     <tr>
-      <td>Max session lifetime:</td>
+      <td>Max. session lifetime:</td>
       <td><?php /* @noEscape */ echo ini_get('session.gc_maxlifetime'); ?></td>
       <td>specifies the number of seconds after which data will be seen as 'garbage' and potentially cleaned up. Be aware that the session lifetime value should be greater than Magento admin session lifetime unless you use Redis for session cache.</td>
+    </tr>
+    <tr>
+      <td>Display errors:</td>
+      <td><?php /* @noEscape */ echo ini_get('display_errors') ? "True" : "False"; ?></td>
+      <td>determines whether errors should be printed to the screen as part of the output or if they should be hidden from the user</td>
+    </tr>
+    <tr>
+      <td>Exposed php:</td>
+      <td><?php /* @noEscape */ echo ini_get('expose_php') ? "True" : "False"; ?></td>
+      <td>exposes to the world that PHP is installed on the server, which includes the PHP version within the HTTP header</td>
+    </tr>
+    <tr>
+      <td>OpCache enabled:</td>
+      <td><?php /* @noEscape */ echo ini_get('opcache.enable') ? "True" : "False"; ?></td>
+      <td>when disabled, code is not optimised or cached</td>
     </tr>
   </tbody>
 </table>

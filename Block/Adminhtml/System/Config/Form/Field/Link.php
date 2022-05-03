@@ -40,7 +40,7 @@ class Link extends Field
     protected function _getElementHtml(AbstractElement $element)
     {
         return sprintf(
-            '<a href="%s#carriers_customshippingrate-link">%s</a>',
+            '<a href="%s">%s</a>',
             $this->_urlBuilder->getUrl('adminhtml/system_config/edit/section/peterbrain_core'),
             __('Store > Configuration > PeterBrain Extensions > Core')
         );

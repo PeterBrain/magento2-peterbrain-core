@@ -43,6 +43,6 @@ class Developer extends Field
      */
     protected function _getElementHtml(AbstractElement $element)
     {
-        return '<a href="https://github.com/PeterBrain" title="Link to Github profile">PeterBrain</a>';
+        return '<a href="https://github.com/PeterBrain" title="Link to GitHub profile">PeterBrain</a>';
     }
 }

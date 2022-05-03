@@ -25,7 +25,7 @@
                     <label>Extension Developer</label>
                     <frontend_model>PeterBrain\Core\Block\Adminhtml\System\Config\Module\Developer</frontend_model>
                     <comment><![CDATA[
-                        Donate: <a href="https://paypal.me/peterbrain?country.x=AT&locale.x=de_DE" title="Buy me a coffe">Buy me a coffee</a>
+                        Donate: <a href="https://paypal.me/peterbrain" title="Buy me a coffee">Buy me a coffee</a>
                     ]]></comment>
                 </field>
                 <field id="version" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
