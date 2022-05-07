@@ -24,39 +24,24 @@ td:last-child {
 }
 </style>
 
-<h2>System Information</h2>
-<h3>Module</h3>
-<table>
-  <tbody>
-    <tr>
-      <td>Extension developer:</td>
-      <td><a href="https://github.com/PeterBrain" title="Link to GitHub profile">PeterBrain</a></td>
-      <td><a href="https://paypal.me/peterbrain" title="Buy me a coffee">Buy me a coffee</a></td>
-    </tr>
-    <tr>
-      <td>Core module version:</td>
-      <td><?php /* @noEscape */ echo $moduleInfoHelper->getModuleVersion(); ?></td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+<h2><?php echo __('System Information'); ?></h2>
 <h3>Magento</h3>
 <table>
   <tbody>
     <tr>
-      <td>Edition:</td>
+      <td><?php echo __('Edition'); ?>:</td>
       <td><?php /* @noEscape */ echo ucfirst($moduleInfoHelper->getMagentoEdition()); ?></td>
     </tr>
     <tr>
-      <td>Version:</td>
+      <td><?php echo __('Version'); ?>:</td>
       <td><?php /* @noEscape */ echo $moduleInfoHelper->getMagentoVersion(); ?></td>
     </tr>
     <tr>
-      <td>Operation mode:</td>
+      <td><?php echo __('Operation mode'); ?>:</td>
       <td><?php /* @noEscape */ echo ucfirst($moduleInfoHelper->getMagentoMode()); ?></td>
     </tr>
     <tr>
-      <td>Installation path:</td>
+      <td><?php echo __('Installation path'); ?>:</td>
       <td><?php /* @noEscape */ echo $moduleInfoHelper->getMagentoPath(); ?></td>
     </tr>
   </tbody>
@@ -65,7 +50,7 @@ td:last-child {
 <table>
   <tbody>
     <tr>
-      <td>Version:</td>
+      <td><?php echo __('Version'); ?>:</td>
       <td><?php /* @noEscape */ echo phpversion(); ?></td>
       <td></td>
     </tr>
@@ -126,11 +111,11 @@ td:last-child {
     </tr>
   </tbody>
 </table>
-<h3>Installed non-Magento Modules</h3>
+<h3><?php echo __('Non-Magento Modules'); ?></h3>
 <table>
   <tbody>
     <tr>
-      <td>Modules:</td>
+      <td><?php echo __('Enabled') ?>:</td>
       <td><?php /* @noEscape */ echo implode('<br>', $moduleInfoHelper->getNonMagentoModuleList()); ?></td>
     </tr>
   </tbody>

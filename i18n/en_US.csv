@@ -1,12 +1,22 @@
 "PeterBrain Extensions","PeterBrain Extensions"
 "Core","Core"
 
-"Information","Information"
 "General Configuration","General Configuration"
+"Information","Information"
 
+"Module Name","Module Name"
 "Module Version","Module Version"
 "Extension Developer","Extension Developer"
+"Donate: <a href=""https://paypal.me/peterbrain"" title=""Buy me a coffee"" target=""_blank"">Buy me a coffee</a>","Donate: <a href=""https://paypal.me/peterbrain"" title=""Buy me a coffee"" target=""_blank"">Buy me a coffee</a>"
 "System Information","System Information"
 "Installed Modules","Installed Modules"
 "Enable PeterBrain Menu","Enable PeterBrain Menu"
 "If enabled, the PeterBrain menu will be displayed on the admin main navigation. All eligible PeterBrain module menus will be displayed there.","If enabled, the PeterBrain menu will be displayed on the admin main navigation. All eligible PeterBrain module menus will be displayed there."
+"Select ""Yes"" to show and ""No"" to hide PeterBrain menu.","Select ""Yes"" to show and ""No"" to hide PeterBrain menu."
+
+"PeterBrain Extensions > Core > System Information","PeterBrain Extensions > Core > System Information"
+"Edition","Edition"
+"Version","Version"
+"Operation mode","Operation mode"
+"Installation path","Installation path"
+"Non-Magento Modules","Non-Magento Modules"

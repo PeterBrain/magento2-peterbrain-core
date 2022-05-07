@@ -25,18 +25,18 @@
                     sortOrder="10"
                     dependsOnModule="PeterBrain_Core"
                     parent="PeterBrain_Core::core"
-                    action="adminhtml/system_config/edit/section/peterbrain_core"
+                    action="adminhtml/system_config/edit/section/pb_core"
                     resource="PeterBrain_Core::config"
                 />
                 <add
-                    id="PeterBrain_Core::info"
-                    title="Information"
+                    id="PeterBrain_Core::sysinfo"
+                    title="System Information"
                     module="PeterBrain_Core"
                     sortOrder="20"
                     dependsOnModule="PeterBrain_Core"
                     parent="PeterBrain_Core::core"
-                    action="pbcore/info"
-                    resource="PeterBrain_Core::info"
+                    action="pbcore/sysinfo"
+                    resource="PeterBrain_Core::sysinfo"
                 />
     </menu>
 </config>

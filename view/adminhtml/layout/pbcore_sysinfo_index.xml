@@ -2,12 +2,12 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <referenceBlock name="page.title">
         <action method="setPageTitle">
-            <argument name="title" xsi:type="string">Info</argument>
+            <argument name="title" xsi:type="string">System Information</argument>
         </action>
     </referenceBlock>
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Backend\Block\Template" template="PeterBrain_Core::info.phtml"/>
+            <block class="Magento\Backend\Block\Template" template="PeterBrain_Core::sysinfo.phtml"/>
         </referenceContainer>
     </body>
 </page>

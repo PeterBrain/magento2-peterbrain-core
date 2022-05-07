@@ -6,7 +6,7 @@
                 <resource id="PeterBrain_Core::peterbrain" title="PeterBrain Extensions" sortOrder="50">
                     <resource id="PeterBrain_Core::core" title="Core" sortOrder="10">
                         <resource id="PeterBrain_Core::config" title="Configuration" sortOrder="10"/>
-                        <resource id="PeterBrain_Core::info" title="Information" sortOrder="90"/>
+                        <resource id="PeterBrain_Core::sysinfo" title="System Information" sortOrder="90"/>
                     </resource>
                 </resource>
             </resource>

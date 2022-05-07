@@ -6,12 +6,12 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
-class Information extends Field
+class SystemInformation extends Field
 {
     /**
      * @var string
      */
-    protected $_template = 'PeterBrain_Core::system/config/field/info.phtml';
+    protected $_template = 'PeterBrain_Core::system/config/field/sysinfo.phtml';
 
     public function __construct(
         Context $context,

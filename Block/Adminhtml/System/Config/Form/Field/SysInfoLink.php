@@ -41,8 +41,8 @@ class SysInfoLink extends Field
     {
         return sprintf(
             '<a href="%s">%s</a>',
-            $this->_urlBuilder->getUrl('pbcore/info/index'),
-            __('PeterBrain Extensions > Core > Information')
+            $this->_urlBuilder->getUrl('pbcore/sysinfo/index'),
+            __('PeterBrain Extensions > Core > System Information')
         );
     }
 }

@@ -123,7 +123,7 @@ class Data extends AbstractHelper
     {
         if (!isset($this->isArea[$area])) {
             /** @var State $state */
-            $state = $this->objectManager->get(\Magento\Framework\App\State::class);
+            $state = $this->objectManager->get(State::class);
 
             try {
                 $this->isArea[$area] = ($state->getAreaCode() == $area);

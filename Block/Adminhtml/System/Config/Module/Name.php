@@ -5,25 +5,20 @@ namespace PeterBrain\Core\Block\Adminhtml\System\Config\Module;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use PeterBrain\Core\Helper\ModuleInfo;
+#use Magento\Framework\App\Request\Http;
 
-class Developer extends Field
+class Name extends Field
 {
-    /**
-     * @var ModuleInfo
-     */
-    private $_moduleInfoHelper;
-
     /**
      * @param Context $context
      * @param array $data
      */
     public function __construct(
         Context $context,
-        ModuleInfo $moduleInfoHelper,
+        #Http $request,
         array $data = []
     ) {
-        $this->_moduleInfoHelper = $moduleInfoHelper;
+        #$this->_request = $request;
         parent::__construct($context, $data);
     }
 
@@ -43,10 +38,6 @@ class Developer extends Field
      */
     protected function _getElementHtml(AbstractElement $element)
     {
-        return sprintf(
-            '<a href="%s" title="Link to GitHub profile" target="_blank">%s</a>',
-            'https://github.com/PeterBrain',
-            'PeterBrain'
-        );
+        return 'PeterBrain_Core'; #$this->_request->getModuleName()
     }
 }
