@@ -7,15 +7,20 @@ table {
 
 th, td {
   vertical-align: top;
-  padding: 0 0.5em 0.75em;
+  padding: 0 0.75em 0.75em;
 }
 
 td:first-child {
   white-space: nowrap;
+  padding-left: 0;
 }
 
 td:nth-child(2) {
   font-weight: 600;
+}
+
+td:last-child {
+  padding-right: 0;
 }
 </style>
 
@@ -26,7 +31,7 @@ td:nth-child(2) {
     <tr>
       <td>Extension developer:</td>
       <td><a href="https://github.com/PeterBrain" title="Link to GitHub profile">PeterBrain</a></td>
-      <td><a href="https://paypal.me/peterbrain?country.x=AT&locale.x=de_DE" title="Buy me a coffee">Buy me a coffee</a></td>
+      <td><a href="https://paypal.me/peterbrain" title="Buy me a coffee">Buy me a coffee</a></td>
     </tr>
     <tr>
       <td>Core module version:</td>
@@ -60,7 +65,7 @@ td:nth-child(2) {
 <table>
   <tbody>
     <tr>
-      <td>PHP version:</td>
+      <td>Version:</td>
       <td><?php /* @noEscape */ echo phpversion(); ?></td>
       <td></td>
     </tr>
@@ -73,6 +78,11 @@ td:nth-child(2) {
       <td>Max. execution time:</td>
       <td><?php /* @noEscape */ echo ini_get('max_execution_time'); ?></td>
       <td>the maximum time in seconds a script is allowed to run before it is terminated by the parser. This helps prevent poorly written scripts from tying up the server.</td>
+    </tr>
+    <tr>
+      <td>Max. session lifetime:</td>
+      <td><?php /* @noEscape */ echo ini_get('session.gc_maxlifetime'); ?></td>
+      <td>specifies the number of seconds after which data will be seen as 'garbage' and potentially cleaned up. Be aware that the session lifetime value should be greater than Magento admin session lifetime unless you use Redis for session cache.</td>
     </tr>
     <tr>
       <td>Max. input time:</td>
@@ -100,24 +110,28 @@ td:nth-child(2) {
       <td>max size of post data allowed. This setting also affects file upload. To upload large files, this value must be greater than pload_max_filesize and should be at least as big as upload_max_filesize * max_file_uploads. Generally speaking, memory_limit should be larger than post_max_size.</td>
     </tr>
     <tr>
-      <td>Max. session lifetime:</td>
-      <td><?php /* @noEscape */ echo ini_get('session.gc_maxlifetime'); ?></td>
-      <td>specifies the number of seconds after which data will be seen as 'garbage' and potentially cleaned up. Be aware that the session lifetime value should be greater than Magento admin session lifetime unless you use Redis for session cache.</td>
-    </tr>
-    <tr>
       <td>Display errors:</td>
       <td><?php /* @noEscape */ echo ini_get('display_errors') ? "True" : "False"; ?></td>
       <td>determines whether errors should be printed to the screen as part of the output or if they should be hidden from the user</td>
     </tr>
     <tr>
-      <td>Exposed php:</td>
+      <td>Exposed:</td>
       <td><?php /* @noEscape */ echo ini_get('expose_php') ? "True" : "False"; ?></td>
-      <td>exposes to the world that PHP is installed on the server, which includes the PHP version within the HTTP header</td>
+      <td>when enabled, it exposes to the world that PHP is installed on the server, which includes the PHP version within the HTTP header</td>
     </tr>
     <tr>
       <td>OpCache enabled:</td>
       <td><?php /* @noEscape */ echo ini_get('opcache.enable') ? "True" : "False"; ?></td>
       <td>when disabled, code is not optimised or cached</td>
+    </tr>
+  </tbody>
+</table>
+<h3>Installed non-Magento Modules</h3>
+<table>
+  <tbody>
+    <tr>
+      <td>Modules:</td>
+      <td><?php /* @noEscape */ echo implode('<br>', $moduleInfoHelper->getNonMagentoModuleList()); ?></td>
     </tr>
   </tbody>
 </table>

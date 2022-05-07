@@ -15,10 +15,14 @@ use Magento\Framework\Filesystem\DirectoryList;
  */
 class ModuleInfo extends AbstractHelper
 {
-    const MODULE_NAME = 'PeterBrain_Core';
-    const CONFIG_MODULE_PATH = 'peterbrain_core';
-
+    /**
+     * @var State
+     */
     protected $_appState;
+
+    /**
+     * @var DirectoryList
+     */
     protected $_directoryList;
 
     /**
@@ -46,12 +50,38 @@ class ModuleInfo extends AbstractHelper
      *
      * @return string
      */
-    public function getModuleVersion()
+    public function getModuleVersion($moduleCode = 'PeterBrain_Core')
     {
-        /*return $this->moduleList->getOne(self::MODULE_NAME)['setup_version'];*/
-        $moduleCode = 'PeterBrain_Core';
         $moduleInfo = $this->_moduleList->getOne($moduleCode);
         return $moduleInfo['setup_version'];
+    }
+
+    /**
+     * get a list of all PeterBrain modules
+     *
+     * @return Array
+     */
+    public function getPbModuleList()
+    {
+        $moduleList = $this->getNonMagentoModuleList();
+
+        return array_filter($moduleList, function ($k) {
+            return strpos($k, 'PeterBrain_') > -1; /* include */
+        });
+    }
+
+    /**
+     * get a list of all non-Magento modules
+     *
+     * @return Array
+     */
+    public function getNonMagentoModuleList()
+    {
+        $moduleList = $this->_moduleList->getNames();
+
+        return array_filter($moduleList, function ($k) {
+            return strpos($k, 'Magento_') === false; /* exclude */
+        });
     }
 
     /**

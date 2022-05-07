@@ -6,7 +6,7 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
-class Link extends Field
+class SysInfoLink extends Field
 {
     /**
      * @param Context $context
@@ -41,8 +41,8 @@ class Link extends Field
     {
         return sprintf(
             '<a href="%s">%s</a>',
-            $this->_urlBuilder->getUrl('adminhtml/system_config/edit/section/peterbrain_core'),
-            __('Store > Configuration > PeterBrain Extensions > Core')
+            $this->_urlBuilder->getUrl('pbcore/info/index'),
+            __('PeterBrain Extensions > Core > Information')
         );
     }
 }

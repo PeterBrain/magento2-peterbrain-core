@@ -9,32 +9,41 @@
             <label>Core</label>
             <tab>peterbrain</tab>
             <resource>PeterBrain_Core::config</resource>
-            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Configuration</label>
-                <field id="menu" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="menu" translate="label comment tooltip" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Enable PeterBrain Menu</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <backend_model>PeterBrain\Core\Model\Config\Backend\Menu</backend_model>
                     <comment>If enabled, the PeterBrain menu will be displayed on the admin main navigation. All eligible PeterBrain module menus will be displayed there.</comment>
+                    <tooltip>Select "Yes" to show and "No" to hide PeterBrain menu.</tooltip>
                 </field>
             </group>
-            <group id="information" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="information" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Information</label>
                 <attribute type="expanded">1</attribute>
-                <field id="developer" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="developer" translate="label comment" type="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Extension Developer</label>
                     <frontend_model>PeterBrain\Core\Block\Adminhtml\System\Config\Module\Developer</frontend_model>
                     <comment><![CDATA[
                         Donate: <a href="https://paypal.me/peterbrain" title="Buy me a coffee">Buy me a coffee</a>
                     ]]></comment>
                 </field>
-                <field id="version" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="version" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Module Version</label>
                     <frontend_model>PeterBrain\Core\Block\Adminhtml\System\Config\Module\Version</frontend_model>
                 </field>
-                <field id="link" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Configuration</label>
-                    <frontend_model>PeterBrain\Core\Block\Adminhtml\System\Config\Form\Field\Link</frontend_model>
+                <!--<field id="version_db" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Module Version DB</label>
+                    <backend_model>PeterBrain\Core\Model\Config\Version</backend_model>
+                </field>-->
+                <field id="link" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>System Information</label>
+                    <frontend_model>PeterBrain\Core\Block\Adminhtml\System\Config\Form\Field\SysInfoLink</frontend_model>
+                </field>
+                <field id="installed_modules" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Installed Modules</label>
+                    <frontend_model>PeterBrain\Core\Block\Adminhtml\System\Config\Module\InstalledModules</frontend_model>
                 </field>
             </group>
         </section>

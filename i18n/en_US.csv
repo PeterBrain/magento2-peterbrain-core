@@ -2,8 +2,11 @@
 "Core","Core"
 
 "Information","Information"
-"Configuration","Configuration"
 "General Configuration","General Configuration"
 
+"Module Version","Module Version"
+"Extension Developer","Extension Developer"
+"System Information","System Information"
+"Installed Modules","Installed Modules"
 "Enable PeterBrain Menu","Enable PeterBrain Menu"
 "If enabled, the PeterBrain menu will be displayed on the admin main navigation. All eligible PeterBrain module menus will be displayed there.","If enabled, the PeterBrain menu will be displayed on the admin main navigation. All eligible PeterBrain module menus will be displayed there."

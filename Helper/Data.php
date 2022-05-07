@@ -18,7 +18,7 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Data extends AbstractHelper
 {
-    const CONFIG_MODULE_PATH = 'peterbrain_core';
+    const CONFIG_MODULE_PATH = 'pb_core';
 
     /**
      * @type StoreManagerInterface
@@ -101,7 +101,6 @@ class Data extends AbstractHelper
 
             return $this->backendConfig->getValue($field);
         }
-
         return $this->scopeConfig->getValue($field, $scopeType, $scopeValue);
     }
 
@@ -132,7 +131,6 @@ class Data extends AbstractHelper
                 $this->isArea[$area] = false;
             }
         }
-
         return $this->isArea[$area];
     }
 }
