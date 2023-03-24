@@ -1,4 +1,4 @@
-<?php $moduleInfoHelper = $this->helper('PeterBrain\Core\Helper\ModuleInfo'); ?>
+<?php $moduleInfoHelper = $this->helper('PeterBrain\Core\Helper\ModuleInfoHelper'); ?>
 
 <style>
 table {
@@ -115,8 +115,29 @@ td:last-child {
 <table>
   <tbody>
     <tr>
-      <td><?php echo __('Enabled') ?>:</td>
-      <td><?php /* @noEscape */ echo implode('<br>', $moduleInfoHelper->getNonMagentoModuleList()); ?></td>
+      <td><?php echo __('Enabled'); ?>:</td>
+      <td><?php
+      /* @noEscape */
+      $modules = $moduleInfoHelper->getNonMagentoModuleList();
+      $modules_enabled = $modules['enabled_modules'];
+
+      $moduleList = array_map(function ($module) {
+        return $module['name'] . ' - ' . ($module['version'] ?: '-') . ' : ' . ($module['setup_version'] ?: '-');
+      }, $modules_enabled);
+
+      echo implode('<br>', $moduleList);
+      ?></td>
+    </tr>
+    <tr>
+      <td><?php echo __('Disabled'); ?>:</td>
+      <td><?php
+      $modules_disabled = $modules['disabled_modules'];
+      $moduleList = array_map(function ($module) {
+        return $module['name'];
+      }, $modules_disabled);
+
+      echo implode('<br>', $moduleList);
+      ?></td>
     </tr>
   </tbody>
 </table>

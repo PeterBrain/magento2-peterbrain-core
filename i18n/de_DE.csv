@@ -1,22 +1,50 @@
 "PeterBrain Extensions","PeterBrain Extensions"
 "Core","Core"
 
-"General Configuration","Allgemeine Konfiguration"
-"Information","Information"
 
+"General Configuration","Allgemeine Konfiguration"
+"Enable PeterBrain Menu","Aktiviere PeterBrain Menü", module, PeterBrain_Core
+"If enabled, the PeterBrain menu will be displayed on the admin main navigation. All eligible PeterBrain module menus will be displayed there.","Wenn diese Option aktiviert ist, wird das PeterBrain-Menü in der Hauptnavigation des Admin-Bereichs angezeigt. Alle verfügbaren und geeigneten PeterBrain-Modulmenüs werden dort angezeigt.", module, PeterBrain_Core
+"Select ""Yes"" to show and ""No"" to hide PeterBrain menu.","Wähle ""Ja"", um das PeterBrain-Menü anzuzeigen und ""Nein"", um es auszublenden.", module, PeterBrain_Core
+
+"Enable Notifications","Aktiviere Benachrichtigungen", module, PeterBrain_Core
+"If disabled, notifications from all PeterBrain modules will not be shown.","Wenn diese Option deaktiviert ist, werden Benachrichtigungen von allen PeterBrain-Modulen nicht angezeigt.", module, PeterBrain_Core
+"Select ""Yes"" to enable and ""No"" to disable PeterBrain module notifications.","Wähle ""Ja"" zum Aktivieren und ""Nein"" zum Deaktivieren von PeterBrain Modul-Benachrichtigungen.", module, PeterBrain_Core
+
+
+"Updates","Updates", module, PeterBrain_Core
+"Check for Updates","Suche nach Updates", module, PeterBrain_Core
+"Check for available updates of PeterBrain modules.","Prüfe, ob Updates für PeterBrain-Module verfügbar sind.", module, PeterBrain_Core
+"Run a manual check for available updates for PeterBrain modules. Make sure that notifications are enabled before checking for updates. Otherwise you will not receive update notification.","Suche manuell nach verfügbaren Updates für PeterBrain-Module. Stelle sicher, dass die Benachrichtigungen aktiviert sind, bevor Sie nach Updates suchen. Andernfalls werden Sie keine Update-Benachrichtigung erhalten.", module, PeterBrain_Core
+
+"Automatically Check for Updates","Automatisch nach Updates Suchen", module, PeterBrain_Core
+"If enabled, the system checks for updates at a specified interval. CronJob Interval: 0 0 * * *","Wenn diese Option aktiviert ist, sucht das System in einem bestimmten Intervall nach Aktualisierungen. CronJob Intervall: 0 0 * * *", module, PeterBrain_Core
+"Select ""Yes"" to enable and ""No"" to disable automatic update checking.","Wähle ""Ja"" zum Aktivieren und ""Nein"" zum Deaktivieren der automatischen Aktualisierungsprüfung.", module, PeterBrain_Core
+
+
+"Information","Information"
+"Extension Developer","Entwickler", module, PeterBrain_Core
+"Donate: <a href=""https://paypal.me/peterbrain"" title=""Buy me a coffee"" target=""_blank"">Buy me a coffee</a>","Spende: <a href=""https://paypal.me/peterbrain"" title=""Gönne mir einen Kaffee"" target=""_blank"">Gönne mir einen Kaffee</a>", module, PeterBrain_Core
 "Module Name","Modul-Name"
 "Module Version","Modul-Version"
-"Extension Developer","Entwickler"
-"Donate: <a href=""https://paypal.me/peterbrain"" title=""Buy me a coffee"" target=""_blank"">Buy me a coffee</a>","Spende: <a href=""https://paypal.me/peterbrain"" title=""Gönne mir einen Kaffee"" target=""_blank"">Gönne mir einen Kaffee</a>"
-"System Information","Systeminformation"
-"Installed Modules","Installierte Module"
-"Enable PeterBrain Menu","Aktiviere PeterBrain Menü"
-"If enabled, the PeterBrain menu will be displayed on the admin main navigation. All eligible PeterBrain module menus will be displayed there.","Wenn diese Option aktiviert ist, wird das PeterBrain-Menü in der Hauptnavigation des Admin-Bereichs angezeigt. Alle verfügbaren und geeigneten PeterBrain-Modulmenüs werden dort angezeigt."
-"Select ""Yes"" to show and ""No"" to hide PeterBrain menu.","Wähle ""Ja"", um das PeterBrain-Menü anzuzeigen und ""Nein"", um es auszublenden."
+"Setup Version","Setup Version"
+"System Information","Systeminformation", module, PeterBrain_Core
+"Installed Modules","Installierte Module", module, PeterBrain_Core
 
-"PeterBrain Extensions > Core > System Information","PeterBrain Extensions > Core > Systeminformation"
-"Edition","Edition"
-"Version","Version"
-"Operation mode","Magento-Modus"
-"Installation path","Installationspfad"
-"Non-Magento Modules","Externe Module"
+
+"PeterBrain Extensions > Core > System Information","PeterBrain Extensions > Core > Systeminformation", module, PeterBrain_Core
+"Edition","Edition", module, PeterBrain_Core
+"Version","Version", module, PeterBrain_Core
+"Operation mode","Magento-Modus", module, PeterBrain_Core
+"Installation path","Installationspfad", module, PeterBrain_Core
+"Non-Magento Modules","Externe Module", module, PeterBrain_Core
+"Enabled","Aktiviert", module, PeterBrain_Core
+"Disabled","Deaktiviert", module, PeterBrain_Core
+
+
+"Check","Überprüfen", module, PeterBrain_Core
+"The update check has been executed successfully.","Die Aktualisierungsprüfung wurde erfolgreich durchgeführt.", module, PeterBrain_Core
+"An error occurred while executing the update check: %1","Beim Ausführen der Aktualisierungsprüfung ist ein Fehler aufgetreten: %1", module, PeterBrain_Core
+"A new version of %1 is available: %2","Eine neue Version von %1 ist verfügbar: %2", module, PeterBrain_Core
+"Read more about changes to the new version on Packagist or GitHub.","Erfahre mehr über die Änderungen der neuen Version auf Packagist oder GitHub.", module, PeterBrain_Core
+"Failed to fetch latest version: %1","Die neueste Version konnte nicht abgerufen werden: %1", module, PeterBrain_Core

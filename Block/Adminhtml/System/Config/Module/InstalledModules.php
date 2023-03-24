@@ -5,22 +5,32 @@ namespace PeterBrain\Core\Block\Adminhtml\System\Config\Module;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use PeterBrain\Core\Helper\ModuleInfo;
+use PeterBrain\Core\Helper\ModuleInfoHelper;
 
+/**
+ * Class InstalledModules
+ *
+ * @author PeterBrain <peter.loecker@live.at>
+ * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
+ * @package PeterBrain\Core\Block\Adminhtml\System\Config\Module
+ */
 class InstalledModules extends Field
 {
     /**
-     * @var ModuleInfo
+     * @var ModuleInfoHelper
      */
     private $_moduleInfoHelper;
 
     /**
+     * Constructor
+     *
      * @param Context $context
+     * @param ModuleInfoHelper $moduleInfoHelper
      * @param array $data
      */
     public function __construct(
         Context $context,
-        ModuleInfo $moduleInfoHelper,
+        ModuleInfoHelper $moduleInfoHelper,
         array $data = []
     ) {
         $this->_moduleInfoHelper = $moduleInfoHelper;
@@ -28,7 +38,8 @@ class InstalledModules extends Field
     }
 
     /**
-     * @param  AbstractElement $element
+     * @param AbstractElement $element
+     *
      * @return string
      */
     public function render(AbstractElement $element)
@@ -38,11 +49,18 @@ class InstalledModules extends Field
     }
 
     /**
-     * @param  AbstractElement $element
+     * @param AbstractElement $element
+     *
      * @return string
      */
     protected function _getElementHtml(AbstractElement $element)
     {
-      return implode('<br>', $this->_moduleInfoHelper->getPbModuleList());
+        $pbModules = $this->_moduleInfoHelper->getPbModuleList();
+
+        $pbModuleList = array_map(function ($module) {
+            return $module['name'] . ' - ' . ($module['version'] ?: '-') . ' : Setup Version: ' . ($module['setup_version'] ?: '-');
+        }, $pbModules);
+
+        return implode('<br>', $pbModuleList);
     }
 }

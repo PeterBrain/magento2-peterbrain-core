@@ -1,12 +1,14 @@
 <?php
-
 namespace PeterBrain\Core\Plugin;
 
 use Magento\Backend\Model\Menu\Builder\AbstractCommand;
-use PeterBrain\Core\Helper\Data;
+use PeterBrain\Core\Helper\CoreHelper;
 
 /**
  * Class MoveMenu
+ *
+ * @author PeterBrain <peter.loecker@live.at>
+ * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
  * @package PeterBrain\Core\Plugin
  */
 class MoveMenu
@@ -14,29 +16,30 @@ class MoveMenu
     const MENU_ID = 'PeterBrain_Core::peterbrain';
 
     /**
-     * @var Data
+     * @var CoreHelper
      */
-    protected $helper;
+    protected $_coreHelper;
 
     /**
-     * MoveMenu constructor.
+     * Constructor
      *
-     * @param Data $helper
+     * @param CoreHelper $coreHelper
      */
-    public function __construct(Data $helper)
-    {
-        $this->helper = $helper;
+    public function __construct(
+        CoreHelper $coreHelper
+    ) {
+        $this->_coreHelper = $coreHelper;
     }
 
     /**
      * @param AbstractCommand $subject
-     * @param $itemParams
+     * @param array $itemParams
      *
      * @return mixed
      */
     public function afterExecute(AbstractCommand $subject, $itemParams)
     {
-        if ($this->helper->getConfigGeneral('menu')) {
+        if ($this->_coreHelper->getConfigGeneral('menu')) {
             if (strpos($itemParams['id'], 'PeterBrain_') !== false && isset($itemParams['parent']) && strpos($itemParams['parent'], 'PeterBrain_') === false) {
                 $itemParams['parent'] = self::MENU_ID;
             }

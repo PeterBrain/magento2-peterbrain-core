@@ -3,8 +3,12 @@
     <default>
         <pb_core>
             <general>
-                <menu>0</menu>
+                <menu>1</menu>
+                <notifications>1</notifications>
             </general>
+            <updates>
+                <auto_update_check>1</auto_update_check>
+            </updates>
         </pb_core>
     </default>
 </config>

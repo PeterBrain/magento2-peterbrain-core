@@ -1,5 +1,4 @@
 <?php
-
 namespace PeterBrain\Core\Controller\Adminhtml\SysInfo;
 
 use Magento\Backend\App\Action;
@@ -10,18 +9,25 @@ use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Index
+ *
+ * @author PeterBrain <peter.loecker@live.at>
+ * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
+ * @package PeterBrain\Core\Controller\Adminhtml\SysInfo
  */
 class Index extends Action implements HttpGetActionInterface
 {
-    const MENU_ID = 'PeterBrain_Core::sysinfo';
-
     /**
      * @var PageFactory
      */
-    protected $_resultPageFactory;
+    private $resultPageFactory;
 
     /**
-     * Index constructor.
+     * @var string
+     */
+    private $menuId;
+
+    /**
+     * Constructor
      *
      * @param Context $context
      * @param PageFactory $resultPageFactory
@@ -32,7 +38,8 @@ class Index extends Action implements HttpGetActionInterface
     ) {
         parent::__construct($context);
 
-        $this->_resultPageFactory = $resultPageFactory;
+        $this->resultPageFactory = $resultPageFactory;
+        $this->menuId = 'PeterBrain_Core::sysinfo';
     }
 
     /**
@@ -42,8 +49,8 @@ class Index extends Action implements HttpGetActionInterface
      */
     public function execute()
     {
-        $resultPage = $this->_resultPageFactory->create();
-        $resultPage->setActiveMenu(static::MENU_ID);
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->setActiveMenu($this->menuId);
         $resultPage->getConfig()->getTitle()->prepend(__('System Information'));
 
         return $resultPage;

@@ -5,16 +5,22 @@ namespace PeterBrain\Core\Block\Adminhtml\System\Config\Module;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use PeterBrain\Core\Helper\ModuleInfoHelper;
 
 /**
- * Class Name
+ * Class SetupVersion
  *
  * @author PeterBrain <peter.loecker@live.at>
  * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
  * @package PeterBrain\Core\Block\Adminhtml\System\Config\Module
  */
-class Name extends Field
+class SetupVersion extends Field
 {
+    /**
+     * @var ModuleInfoHelper
+     */
+    private $_moduleInfoHelper;
+
     /**
      * @var AbstractElement
      */
@@ -24,12 +30,15 @@ class Name extends Field
      * Constructor
      *
      * @param Context $context
+     * @param ModuleInfoHelper $moduleInfoHelper
      * @param array $data
      */
     public function __construct(
         Context $context,
+        ModuleInfoHelper $moduleInfoHelper,
         array $data = []
     ) {
+        $this->_moduleInfoHelper = $moduleInfoHelper;
         parent::__construct($context, $data);
     }
 
@@ -52,6 +61,7 @@ class Name extends Field
      */
     protected function _getElementHtml(AbstractElement $element)
     {
-        return $this->element->getData('field_config', 'module_name');
+        $moduleName = $this->element->getData('field_config', 'module_name');
+        return $this->_moduleInfoHelper->getModuleSetupVersion($moduleName) ?: '-';
     }
 }

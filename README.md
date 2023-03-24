@@ -13,6 +13,17 @@ Package name: `peterbrain/magento2-peterbrain-core`
 
 PeterBrain Extension core module - requirement for PeterBrain Extensions
 
+- View system information
+- View module information
+- Run update check (manual/auto)
+- Notifications
+- PeterBrain Menu
+
+View vital information about your system:
+![View vital information about your system.](https://github.com/peterbrain/magento2-peterbrain-core/blob/media/core_system-information.jpg?raw=true)
+Admin configuration:
+![Admin configuration](https://github.com/peterbrain/magento2-peterbrain-core/blob/media/core_configuration.jpg?raw=true)
+
 ## Installation
 
 ### Method 1: Composer (recommended)

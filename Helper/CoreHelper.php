@@ -1,5 +1,4 @@
 <?php
-
 namespace PeterBrain\Core\Helper;
 
 use Exception;
@@ -13,27 +12,33 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * Class Data
+ * Class CoreHelper
+ *
+ * @author PeterBrain <peter.loecker@live.at>
+ * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
  * @package PeterBrain\Core\Helper
  */
-class Data extends AbstractHelper
+class CoreHelper extends AbstractHelper
 {
     const CONFIG_MODULE_PATH = 'pb_core';
+    const SCOPE_STORE = ScopeInterface::SCOPE_STORE;
+    const AREA_FRONTEND = Area::AREA_FRONTEND;
+    const AREA_ADMINHTML = Area::AREA_ADMINHTML;
 
     /**
-     * @type StoreManagerInterface
+     * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected $_storeManager;
 
     /**
-     * @type ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
-    protected $objectManager;
+    protected $_objectManager;
 
     /**
      * @var Config
      */
-    protected $backendConfig;
+    protected $_backendConfig;
 
     /**
      * @var array
@@ -41,7 +46,7 @@ class Data extends AbstractHelper
     protected $isArea = [];
 
     /**
-     * AbstractData constructor.
+     * Constructor
      *
      * @param Context $context
      * @param ObjectManagerInterface $objectManager
@@ -52,8 +57,8 @@ class Data extends AbstractHelper
         ObjectManagerInterface $objectManager,
         StoreManagerInterface $storeManager
     ) {
-        $this->objectManager = $objectManager;
-        $this->storeManager = $storeManager;
+        $this->_objectManager = $objectManager;
+        $this->_storeManager = $storeManager;
 
         parent::__construct($context);
     }
@@ -64,7 +69,7 @@ class Data extends AbstractHelper
      *
      * @return mixed
      */
-    public function getConfigGeneral($code = '', $storeId = null)
+    public function getConfigGeneral(string $code = '', $storeId = null)
     {
         $code = ($code !== '') ? '/' . $code : '';
 
@@ -77,7 +82,7 @@ class Data extends AbstractHelper
      *
      * @return mixed
      */
-    public function getModuleConfig($field = '', $storeId = null)
+    public function getModuleConfig(string $field = '', $storeId = null)
     {
         $field = ($field !== '') ? '/' . $field : '';
 
@@ -85,33 +90,34 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @param $field
+     * @param string $configPath
      * @param null $scopeValue
      * @param string $scopeType
      *
-     * @return array|mixed
+     * @return string
      */
-    public function getConfigValue($field, $scopeValue = null, $scopeType = ScopeInterface::SCOPE_STORE)
+    public function getConfigValue(string $configPath, $scopeValue = null, $scopeType = self::SCOPE_STORE): string
     {
         if ($scopeValue === null && !$this->isArea()) {
-            /** @var Config $backendConfig */
-            if (!$this->backendConfig) {
-                $this->backendConfig = $this->objectManager->get(\Magento\Backend\App\ConfigInterface::class);
+            if (!$this->_backendConfig) {
+                $this->_backendConfig = $this->_objectManager->get(Config::class);
             }
-
-            return $this->backendConfig->getValue($field);
+            return $this->_backendConfig->getValue($configPath);
         }
-        return $this->scopeConfig->getValue($field, $scopeType, $scopeValue);
+
+        return $this->scopeConfig->getValue(
+            $configPath,
+            $scopeType,
+            $scopeValue
+        );
     }
 
     /**
-     * Is admin
-     *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        return $this->isArea(Area::AREA_ADMINHTML);
+        return $this->isArea(static::AREA_ADMINHTML);
     }
 
     /**
@@ -119,12 +125,10 @@ class Data extends AbstractHelper
      *
      * @return mixed
      */
-    public function isArea($area = Area::AREA_FRONTEND)
+    public function isArea(string $area = self::AREA_FRONTEND)
     {
         if (!isset($this->isArea[$area])) {
-            /** @var State $state */
-            $state = $this->objectManager->get(State::class);
-
+            $state = $this->_objectManager->get(State::class);
             try {
                 $this->isArea[$area] = ($state->getAreaCode() == $area);
             } catch (Exception $e) {

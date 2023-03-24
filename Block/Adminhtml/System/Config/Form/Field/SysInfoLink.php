@@ -6,9 +6,18 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
+/**
+ * Class SysInfoLink
+ *
+ * @author PeterBrain <peter.loecker@live.at>
+ * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
+ * @package PeterBrain\Core\Block\Adminhtml\System\Config\Form\Field
+ */
 class SysInfoLink extends Field
 {
     /**
+     * Constructor
+     *
      * @param Context $context
      * @param array $data
      */
@@ -20,9 +29,8 @@ class SysInfoLink extends Field
     }
 
     /**
-     * Render button
-     *
      * @param AbstractElement $element
+     *
      * @return string
      */
     public function render(AbstractElement $element)
@@ -32,9 +40,8 @@ class SysInfoLink extends Field
     }
 
     /**
-     * Return element html
+     * @param AbstractElement $element
      *
-     * @param  AbstractElement $element
      * @return string
      */
     protected function _getElementHtml(AbstractElement $element)
