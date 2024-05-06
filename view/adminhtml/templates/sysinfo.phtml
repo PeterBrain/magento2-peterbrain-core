@@ -1,27 +1,45 @@
-<?php $moduleInfoHelper = $this->helper('PeterBrain\Core\Helper\ModuleInfoHelper'); ?>
+<?php
+$sysInfoHelper = $this->helper('PeterBrain\Core\Helper\SysInfoHelper');
+$moduleInfoHelper = $this->helper('PeterBrain\Core\Helper\ModuleInfoHelper');
+?>
 
 <style>
-table {
-  margin: 0 0 2em;
-}
+  table {
+    border-collapse: collapse;
+    margin: 0 0 32px;
+  }
 
-th, td {
-  vertical-align: top;
-  padding: 0 0.75em 0.75em;
-}
+  th, td {
+    vertical-align: top;
+    padding: 5px 15px;
+  }
 
-td:first-child {
-  white-space: nowrap;
-  padding-left: 0;
-}
+  td:first-child {
+    white-space: nowrap;
+    padding-left: 0;
+  }
 
-td:nth-child(2) {
-  font-weight: 600;
-}
+  td:nth-child(2) {
+    font-weight: 600;
+  }
 
-td:last-child {
-  padding-right: 0;
-}
+  td:last-child {
+    padding-right: 0;
+  }
+
+  .modules tr,
+  .modules th,
+  .modules td {
+    border: 1px solid #ccc;
+  }
+
+  .modules td:first-child {
+    padding-left: 15px;
+  }
+
+  .modules.enabled td:nth-child(n+2) {
+    text-align: center;
+  }
 </style>
 
 <h2><?php echo __('System Information'); ?></h2>
@@ -30,22 +48,49 @@ td:last-child {
   <tbody>
     <tr>
       <td><?php echo __('Edition'); ?>:</td>
-      <td><?php /* @noEscape */ echo ucfirst($moduleInfoHelper->getMagentoEdition()); ?></td>
+      <td><?php /* @noEscape */ echo ucfirst($sysInfoHelper->getMagentoEdition()); ?></td>
     </tr>
     <tr>
       <td><?php echo __('Version'); ?>:</td>
-      <td><?php /* @noEscape */ echo $moduleInfoHelper->getMagentoVersion(); ?></td>
+      <td><?php /* @noEscape */ echo $sysInfoHelper->getMagentoVersion(); ?></td>
     </tr>
     <tr>
       <td><?php echo __('Operation mode'); ?>:</td>
-      <td><?php /* @noEscape */ echo ucfirst($moduleInfoHelper->getMagentoMode()); ?></td>
+      <td><?php /* @noEscape */ echo ucfirst($sysInfoHelper->getMagentoMode()); ?></td>
     </tr>
     <tr>
       <td><?php echo __('Installation path'); ?>:</td>
-      <td><?php /* @noEscape */ echo $moduleInfoHelper->getMagentoPath(); ?></td>
+      <td><?php /* @noEscape */ echo $sysInfoHelper->getMagentoPath(); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo __('Server date and time'); ?>:</td>
+      <td><?php /* @noEscape */ echo $sysInfoHelper->getServerTime(); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo __('Server user'); ?>:</td>
+      <td><?php /* @noEscape */ echo $sysInfoHelper->getCurrentServerUser(); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo __('Server user group'); ?>:</td>
+      <td><?php /* @noEscape */ echo $sysInfoHelper->getCurrentServerUserGroup(); ?></td>
     </tr>
   </tbody>
 </table>
+
+<h3>Database</h3>
+<table>
+  <tbody>
+    <tr>
+      <td><?php echo __('Version'); ?>:</td>
+      <td><?php /* @noEscape */ echo $sysInfoHelper->getDbVersion(); ?></td>
+    </tr>
+    <tr>
+      <td><?php echo __('Database time'); ?>:</td>
+      <td><?php /* @noEscape */ echo $sysInfoHelper->getDbTime(); ?></td>
+    </tr>
+  </tbody>
+</table>
+
 <h3>PHP</h3>
 <table>
   <tbody>
@@ -57,7 +102,7 @@ td:last-child {
     <tr>
       <td>Memory limit:</td>
       <td><?php /* @noEscape */ echo ini_get('memory_limit'); ?></td>
-      <td>the maximum amount of memory in bytes that a script is allowed to allocate. This helps prevent poorly written scripts for eating up all available memory on a server. This value should be at least as big as post_max_size</td>
+      <td>the maximum amount of memory in bytes that a script is allowed to allocate. This helps prevent poorly written scripts for eating up all available memory on a server.</td>
     </tr>
     <tr>
       <td>Max. execution time:</td>
@@ -92,7 +137,7 @@ td:last-child {
     <tr>
       <td>Max. POST size:</td>
       <td><?php /* @noEscape */ echo ini_get('post_max_size'); ?></td>
-      <td>max size of post data allowed. This setting also affects file upload. To upload large files, this value must be greater than pload_max_filesize and should be at least as big as upload_max_filesize * max_file_uploads. Generally speaking, memory_limit should be larger than post_max_size.</td>
+      <td>max size of post data allowed. This setting also affects file upload. To upload large files, this value must be greater than upload_max_filesize and should be at least as big as upload_max_filesize * max_file_uploads.</td>
     </tr>
     <tr>
       <td>Display errors:</td>
@@ -111,33 +156,89 @@ td:last-child {
     </tr>
   </tbody>
 </table>
-<h3><?php echo __('Non-Magento Modules'); ?></h3>
-<table>
-  <tbody>
-    <tr>
-      <td><?php echo __('Enabled'); ?>:</td>
-      <td><?php
-      /* @noEscape */
-      $modules = $moduleInfoHelper->getNonMagentoModuleList();
-      $modules_enabled = $modules['enabled_modules'];
 
-      $moduleList = array_map(function ($module) {
-        return $module['name'] . ' - ' . ($module['version'] ?: '-') . ' : ' . ($module['setup_version'] ?: '-');
-      }, $modules_enabled);
+<div>
+  <h3><?php echo __('Non-Magento Modules'); ?></h3>
+  <div style="display: flex;">
+    <div style="width: 50%;">
+      <h4><?php echo __('Enabled'); ?></h4>
+      <table class="modules non-magento enabled">
+        <thead>
+          <tr>
+            <th scope="col"><?php echo __('Module'); ?></th>
+            <th scope="col"><?php echo __('Version'); ?></th>
+            <th scope="col"><?php echo __('Setup Version'); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            /* @noEscape */
+            $modules = $moduleInfoHelper->getNonMagentoModuleList();
+            $modules_enabled = $modules['enabled_modules'];
 
-      echo implode('<br>', $moduleList);
-      ?></td>
-    </tr>
-    <tr>
-      <td><?php echo __('Disabled'); ?>:</td>
-      <td><?php
-      $modules_disabled = $modules['disabled_modules'];
-      $moduleList = array_map(function ($module) {
-        return $module['name'];
-      }, $modules_disabled);
+            $moduleList = array_map(function ($module) {
+              return '<tr><td>' . $module['name'] . '</td><td>' . ($module['version'] ?: '-') . '</td><td>' . ($module['setup_version'] ?: '-') . '</td></tr>';
+            }, $modules_enabled);
 
-      echo implode('<br>', $moduleList);
-      ?></td>
-    </tr>
-  </tbody>
-</table>
+            echo implode('', $moduleList);
+          ?>
+        </tbody>
+      </table>
+    </div>
+    <div style="width: 50%;">
+      <h4><?php echo __('Disabled'); ?></h4>
+      <p>
+        <?php
+          $modules_disabled = $modules['disabled_modules'];
+          $moduleList = array_map(function ($module) {
+            return $module['name'];
+          }, $modules_disabled);
+
+          echo implode('<br>', $moduleList);
+        ?>
+      </p>
+    </div>
+  </div>
+
+  <h3><?php echo __('Magento Modules'); ?></h3>
+  <div style="display: flex;">
+    <div style="width: 50%;">
+      <h4><?php echo __('Enabled'); ?></h4>
+      <table class="modules magento enabled">
+        <thead>
+          <tr>
+            <th scope="col"><?php echo __('Module'); ?></th>
+            <th scope="col"><?php echo __('Version'); ?></th>
+            <th scope="col"><?php echo __('Setup Version'); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            /* @noEscape */
+            $modules = $moduleInfoHelper->getMagentoModuleList();
+            $modules_enabled = $modules['enabled_modules'];
+
+            $moduleList = array_map(function ($module) {
+              return '<tr><td>' . $module['name'] . '</td><td>' . ($module['version'] ?: '-') . '</td><td>' . ($module['setup_version'] ?: '-') . '</td></tr>';
+            }, $modules_enabled);
+
+            echo implode('', $moduleList);
+          ?>
+        </tbody>
+      </table>
+    </div>
+    <div style="width: 50%;">
+      <h4><?php echo __('Disabled'); ?></h4>
+      <p>
+        <?php
+          $modules_disabled = $modules['disabled_modules'];
+          $moduleList = array_map(function ($module) {
+            return $module['name'];
+          }, $modules_disabled);
+
+          echo implode('<br>', $moduleList);
+        ?>
+      </p>
+    </div>
+  </div>
+</div>

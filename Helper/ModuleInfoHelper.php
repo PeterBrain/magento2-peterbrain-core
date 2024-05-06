@@ -5,9 +5,6 @@ use GuzzleHttp\Client;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\ProductMetadataInterface;
-use Magento\Framework\App\State;
-use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Module\FullModuleList;
 use Magento\Framework\Module\Manager as ModuleManager;
 use Magento\Framework\Module\PackageInfo;
@@ -21,21 +18,6 @@ use Magento\Framework\Module\PackageInfo;
  */
 class ModuleInfoHelper extends AbstractHelper
 {
-    /**
-     * @var State
-     */
-    protected $_appState;
-
-    /**
-     * @var ProductMetadataInterface
-     */
-    protected $_productMetaData;
-
-    /**
-     * @var DirectoryList
-     */
-    protected $_directoryList;
-
     /**
      * @var FullModuleList
      */
@@ -59,7 +41,17 @@ class ModuleInfoHelper extends AbstractHelper
     /**
      * @var array
      */
+    protected $_allModuleList = null;
+
+    /**
+     * @var array
+     */
     protected $_nonMagentoModuleList = null;
+
+    /**
+     * @var array
+     */
+    protected $_magentoModuleList = null;
 
     /**
      * @var array
@@ -69,9 +61,6 @@ class ModuleInfoHelper extends AbstractHelper
     /**
      * Constructor
      *
-     * @param State $appState
-     * @param DirectoryList $directoryList
-     * @param ProductMetadataInterface $productMetadata
      * @param ModuleListInterface $moduleListInterface
      * @param FullModuleList $moduleList
      * @param ModuleManager $moduleManager
@@ -80,17 +69,11 @@ class ModuleInfoHelper extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        State $appState,
-        DirectoryList $directoryList,
-        ProductMetadataInterface $productMetadata,
         FullModuleList $moduleList,
         ModuleManager $moduleManager,
         PackageInfo $packageInfo,
         ScopeConfigInterface $scopeConfig
     ) {
-        $this->_appState = $appState;
-        $this->_directoryList = $directoryList;
-        $this->_productMetaData = $productMetadata;
         $this->_moduleList = $moduleList;
         $this->_moduleManager = $moduleManager;
         $this->_packageInfo = $packageInfo;
@@ -267,13 +250,13 @@ class ModuleInfoHelper extends AbstractHelper
     }
 
     /**
-     * Get a list of all non-Magento modules
+     * Get a list of all modules
      *
      * @return array
      */
-    public function getNonMagentoModuleList(): array
+    public function getAllModuleList(): array
     {
-        if ($this->_nonMagentoModuleList === null) {
+        if ($this->_allModuleList === null) {
             $moduleList = $this->_moduleList->getAll();
 
             $createModuleInfo = function ($module) {
@@ -286,64 +269,62 @@ class ModuleInfoHelper extends AbstractHelper
                 ];
             };
 
-            $this->_nonMagentoModuleList = [
+            $this->_allModuleList = [
                 'enabled_modules' => [],
                 'disabled_modules' => [],
             ];
 
-            $nonMagentoModules = array_filter($moduleList, function ($module) {
-                return strpos($module['name'], 'Magento_') === false;
-            });
-
-            $this->_nonMagentoModuleList['enabled_modules'] = array_map($createModuleInfo, array_filter($nonMagentoModules, function ($module) {
+            $this->_allModuleList['enabled_modules'] = array_map($createModuleInfo, array_filter($moduleList, function ($module) {
                 return $this->_moduleManager->isEnabled($module['name']);
             }));
 
-            $this->_nonMagentoModuleList['disabled_modules'] = array_map($createModuleInfo, array_filter($nonMagentoModules, function ($module) {
+            $this->_allModuleList['disabled_modules'] = array_map($createModuleInfo, array_filter($moduleList, function ($module) {
                 return !$this->_moduleManager->isEnabled($module['name']);
             }));
         }
 
+        return $this->_allModuleList;
+    }
+
+    /**
+     * Get a list of all Magento modules
+     *
+     * @return array
+     */
+    public function getMagentoModuleList(): array
+    {
+        if ($this->_magentoModuleList === null) {
+            $moduleList = $this->getAllModuleList();
+
+            $filterMagentoModules = function ($module) {
+                return strpos($module['name'], 'Magento_') === 0;
+            };
+
+            $this->_magentoModuleList['enabled_modules'] = array_filter($moduleList['enabled_modules'], $filterMagentoModules);
+            $this->_magentoModuleList['disabled_modules'] = array_filter($moduleList['disabled_modules'], $filterMagentoModules);
+        }
+
+        return $this->_magentoModuleList;
+    }
+
+    /**
+     * Get a list of all non-Magento modules
+     *
+     * @return array
+     */
+    public function getNonMagentoModuleList(): array
+    {
+        if ($this->_nonMagentoModuleList === null) {
+            $moduleList = $this->getAllModuleList();
+
+            $filterNonMagentoModules = function ($module) {
+                return strpos($module['name'], 'Magento_') === false;
+            };
+
+            $this->_nonMagentoModuleList['enabled_modules'] = array_filter($moduleList['enabled_modules'], $filterNonMagentoModules);
+            $this->_nonMagentoModuleList['disabled_modules'] = array_filter($moduleList['disabled_modules'], $filterNonMagentoModules);
+        }
+
         return $this->_nonMagentoModuleList;
-    }
-
-    /**
-     * Get Magento edition
-     *
-     * @return string
-     */
-    public function getMagentoEdition(): string
-    {
-        return $this->_productMetaData->getEdition();
-    }
-
-    /**
-     * Get Magento version
-     *
-     * @return string
-     */
-    public function getMagentoVersion(): string
-    {
-        return $this->_productMetaData->getVersion();
-    }
-
-    /**
-     * Get Magento deployment mode
-     *
-     * @return string
-     */
-    public function getMagentoMode(): string
-    {
-        return $this->_appState->getMode();
-    }
-
-    /**
-     * Get Magento root directory path
-     *
-     * @return string
-     */
-    public function getMagentoPath(): string
-    {
-        return $this->_directoryList->getRoot();
     }
 }

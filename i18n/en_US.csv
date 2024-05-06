@@ -37,6 +37,11 @@
 "Version","Version", module, PeterBrain_Core
 "Operation mode","Operation mode", module, PeterBrain_Core
 "Installation path","Installation path", module, PeterBrain_Core
+"Database time","Database time", module, PeterBrain_Core
+"Server date and time","Server date and time", module, PeterBrain_Core
+"Server user","Server user", module, PeterBrain_Core
+"Server user group","Server user group", module, PeterBrain_Core
+"Magento Modules","Magento Modules", module, PeterBrain_Core
 "Non-Magento Modules","Non-Magento Modules", module, PeterBrain_Core
 "Enabled","Enabled", module, PeterBrain_Core
 "Disabled","Disabled", module, PeterBrain_Core

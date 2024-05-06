@@ -2,7 +2,7 @@
     "name": "peterbrain/magento2-peterbrain-core",
     "description": "PeterBrain Extension core module",
     "type": "magento2-module",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "license": [
         "OSL-3.0"
     ],
