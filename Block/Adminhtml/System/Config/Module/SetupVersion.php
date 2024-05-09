@@ -1,5 +1,4 @@
 <?php
-
 namespace PeterBrain\Core\Block\Adminhtml\System\Config\Module;
 
 use Magento\Backend\Block\Template\Context;
@@ -9,10 +8,10 @@ use PeterBrain\Core\Helper\ModuleInfoHelper;
 
 /**
  * Class SetupVersion
+ * module setup version information
  *
  * @author PeterBrain <peter.loecker@live.at>
  * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
- * @package PeterBrain\Core\Block\Adminhtml\System\Config\Module
  */
 class SetupVersion extends Field
 {
@@ -38,8 +37,8 @@ class SetupVersion extends Field
         ModuleInfoHelper $moduleInfoHelper,
         array $data = []
     ) {
-        $this->_moduleInfoHelper = $moduleInfoHelper;
         parent::__construct($context, $data);
+        $this->_moduleInfoHelper = $moduleInfoHelper;
     }
 
     /**

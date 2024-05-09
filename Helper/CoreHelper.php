@@ -13,10 +13,10 @@ use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class CoreHelper
+ * main core helper
  *
  * @author PeterBrain <peter.loecker@live.at>
  * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
- * @package PeterBrain\Core\Helper
  */
 class CoreHelper extends AbstractHelper
 {
@@ -57,10 +57,9 @@ class CoreHelper extends AbstractHelper
         ObjectManagerInterface $objectManager,
         StoreManagerInterface $storeManager
     ) {
+        parent::__construct($context);
         $this->_objectManager = $objectManager;
         $this->_storeManager = $storeManager;
-
-        parent::__construct($context);
     }
 
     /**

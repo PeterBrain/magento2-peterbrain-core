@@ -11,23 +11,22 @@ use Magento\Framework\App\ProductMetadataInterface;
 
 /**
  * Class SysInfoHelper
+ * system information helper
  *
  * @author PeterBrain <peter.loecker@live.at>
  * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
- * @package PeterBrain\Core\Helper
  */
 class SysInfoHelper extends AbstractHelper
 {
-
     /**
      * @var DateTime
      */
-    protected $dateTime;
+    protected $_dateTime;
 
     /**
      * @var ResourceConnection
      */
-    private $resourceConnection;
+    private $_resourceConnection;
 
     /**
      * @var State
@@ -63,9 +62,8 @@ class SysInfoHelper extends AbstractHelper
         ProductMetadataInterface $productMetadata
     ) {
         parent::__construct($context);
-
-        $this->dateTime = $datetime;
-        $this->resourceConnection = $resourceConnection;
+        $this->_dateTime = $datetime;
+        $this->_resourceConnection = $resourceConnection;
         $this->_appState = $appState;
         $this->_directoryList = $directoryList;
         $this->_productMetaData = $productMetadata;
@@ -124,8 +122,8 @@ class SysInfoHelper extends AbstractHelper
      */
     public function getCurrentServerUserGroup()
     {
-        $groupid = posix_getegid();
-        $groupinfo = posix_getgrgid($groupid);
+        $groupid = posix_getegid(); // phpcs:ignore
+        $groupinfo = posix_getgrgid($groupid); // phpcs:ignore
 
         return $groupinfo['name'];
     }
@@ -135,7 +133,7 @@ class SysInfoHelper extends AbstractHelper
      */
     public function getServerTime()
     {
-        return $this->dateTime->gmtDate('Y-m-d H:i:s \U\T\CP');
+        return $this->_dateTime->gmtDate('Y-m-d H:i:s \U\T\CP');
     }
 
     /**
@@ -143,7 +141,7 @@ class SysInfoHelper extends AbstractHelper
      */
     public function getDbTime(): string
     {
-        return $this->resourceConnection->getConnection()->fetchOne('select now()');
+        return $this->_resourceConnection->getConnection()->fetchOne('select now()');
     }
 
     /**
@@ -151,6 +149,6 @@ class SysInfoHelper extends AbstractHelper
      */
     public function getDbVersion(): string
     {
-        return $this->resourceConnection->getConnection()->fetchOne('select version()');
+        return $this->_resourceConnection->getConnection()->fetchOne('select version()');
     }
 }

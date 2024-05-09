@@ -1,6 +1,8 @@
 <?php
 namespace PeterBrain\Core\Cron;
 
+use Exception;
+use Psr\Log\LoggerInterface;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Helper\Data;
 use Magento\Framework\App\CacheInterface;
@@ -14,10 +16,10 @@ use PeterBrain\Core\Helper\CoreHelper;
 
 /**
  * Class Updater
+ * update check & notifier
  *
  * @author PeterBrain <peter.loecker@live.at>
  * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
- * @package PeterBrain\Core\Cron
  */
 class Updater
 {
@@ -25,6 +27,11 @@ class Updater
      * @var Context
      */
     protected $_context;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $_logger;
 
     /**
      * @var Data
@@ -70,6 +77,7 @@ class Updater
      * Constructor
      *
      * @param Context $context
+     * @param LoggerInterface $logger
      * @param Data $backendHelper
      * @param NotifierInterface $notifier
      * @param ScopeConfigInterface $scopeConfig
@@ -80,6 +88,7 @@ class Updater
      */
     public function __construct(
         Context $context,
+        LoggerInterface $logger,
         Data $backendHelper,
         NotifierInterface $notifier,
         ScopeConfigInterface $scopeConfig,
@@ -90,6 +99,7 @@ class Updater
         CoreHelper $coreHelper
     ) {
         $this->_context = $context;
+        $this->_logger = $logger;
         $this->_backendHelper = $backendHelper;
         $this->_notifier = $notifier;
         $this->_scopeConfig = $scopeConfig;
@@ -105,7 +115,11 @@ class Updater
      */
     public function execute()
     {
-        $enableAutoCheck = $this->_scopeConfig->getValue('pb_core/updates/auto_update_check', ScopeConfigInterface::SCOPE_TYPE_DEFAULT, false);
+        $enableAutoCheck = $this->_scopeConfig->getValue(
+            'pb_core/updates/auto_update_check',
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+            false
+        );
 
         if ($enableAutoCheck) {
             $this->checkUpdate();
@@ -125,22 +139,42 @@ class Updater
             $moduleName = $pbModule['name'];
             $moduleVersion = $pbModule['version'];
             $packageName = $this->_moduleInfoHelper->getPackageName($moduleName);
-            $configPathModuleName = 'pb' . str_replace('peterbrain', '', strtolower($moduleName)) . '/updater/latest_version';
+            $configPathModuleName = 'pb' .
+                str_replace('peterbrain', '', strtolower($moduleName)) . '/updater/latest_version';
             $cacheKey = 'pb_updater_latest_version_' . strtolower($moduleName);
 
             $cachedLatestVersion = $this->_cache->load($cacheKey);
-            $latestVersion = $this->_moduleInfoHelper->fetchLatestVersion($packageName);
+            if ($moduleVersion) {
+                try {
+                    $latestVersion = $this->_moduleInfoHelper->fetchLatestVersion($packageName);
 
-            if (!isset($cachedLatestVersion) || version_compare($cachedLatestVersion, $latestVersion, '<')) { /* check cache for newest version */
-                $this->_cache->save($latestVersion, $cacheKey, [], null);
-                $this->_cacheTypeList->invalidate('config');
-                $storedLatestVersion = $this->_scopeConfig->getValue($configPathModuleName, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, false);
+                    if (!isset($cachedLatestVersion) ||
+                        version_compare($cachedLatestVersion, $latestVersion, '<')
+                    ) { /* check cache for newest version */
+                        $this->_cache->save($latestVersion, $cacheKey, [], null);
+                        $this->_cacheTypeList->invalidate('config');
+                        $storedLatestVersion = $this->_scopeConfig->getValue(
+                            $configPathModuleName,
+                            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                            false
+                        );
 
-                if (!isset($storedLatestVersion) || version_compare($storedLatestVersion, $latestVersion, '<')) { /* check system config for newest version */
-                    if (version_compare($moduleVersion, $latestVersion, '<')) {
-                        $this->_configWriter->save($configPathModuleName, $latestVersion, ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
-                        !$this->_coreHelper->getConfigGeneral('notifications') ?: $this->notifyUpdate($moduleName, $latestVersion);
+                        if ((!isset($storedLatestVersion) ||
+                            version_compare($storedLatestVersion, $latestVersion, '<')) &&
+                            version_compare($moduleVersion, $latestVersion, '<')
+                        ) { /* check system config for newest version */
+                            $this->_configWriter->save(
+                                $configPathModuleName,
+                                $latestVersion,
+                                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+                            );
+                            !$this->_coreHelper->getConfigGeneral('notifications') ?:
+                                $this->notifyUpdate($moduleName, $latestVersion);
+                        }
                     }
+                } catch (\Exception $e) {
+                    $this->_logger->error("Unable to check for updates for module '$moduleName': " . $e->getMessage());
+                    continue;
                 }
             }
         }
@@ -160,11 +194,16 @@ class Updater
         string $moduleName,
         string $latestVersion
     ) {
+        $url = $this->_moduleInfoHelper->getPackagistUrl($this->_moduleInfoHelper->getPackageName($moduleName));
         $title = __('A new version of %1 is available: %2', str_replace('_', ' ', $moduleName), $latestVersion);
-        $description = __('Read more about changes to the new version on Packagist or GitHub.');
-        $url = $this->_moduleInfoHelper->getPackagistUrl($this->_moduleInfoHelper->getPackageName($moduleName));/*$this->_backendHelper->getUrl('adminhtml/system_config/edit/section/pb_core');*/
-        $severity = MessageInterface::SEVERITY_NOTICE;
+        $description = __('Read more about changes in the new version on Packagist or GitHub.') . ' ' . $url;
 
-        $this->_notifier->addNotice($title, $description, $url, $severity); /* addNotice, addMinor, addMajor, addCritical*/
+        $severity = MessageInterface::SEVERITY_NOTICE;
+        $this->_notifier->addNotice(
+            $title,
+            $description,
+            $url,
+            $severity
+        ); /* addNotice, addMinor, addMajor, addCritical */
     }
 }

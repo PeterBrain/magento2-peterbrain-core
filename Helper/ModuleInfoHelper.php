@@ -1,7 +1,10 @@
 <?php
 namespace PeterBrain\Core\Helper;
 
+use Exception;
+use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -11,13 +14,18 @@ use Magento\Framework\Module\PackageInfo;
 
 /**
  * Class ModuleInfoHelper
+ * module information helper
  *
  * @author PeterBrain <peter.loecker@live.at>
  * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
- * @package PeterBrain\Core\Helper
  */
 class ModuleInfoHelper extends AbstractHelper
 {
+    /**
+     * @var LoggerInterface
+     */
+    protected $_logger;
+
     /**
      * @var FullModuleList
      */
@@ -61,6 +69,8 @@ class ModuleInfoHelper extends AbstractHelper
     /**
      * Constructor
      *
+     * @param Context $context
+     * @param LoggerInterface $logger
      * @param ModuleListInterface $moduleListInterface
      * @param FullModuleList $moduleList
      * @param ModuleManager $moduleManager
@@ -69,16 +79,18 @@ class ModuleInfoHelper extends AbstractHelper
      */
     public function __construct(
         Context $context,
+        LoggerInterface $logger,
         FullModuleList $moduleList,
         ModuleManager $moduleManager,
         PackageInfo $packageInfo,
         ScopeConfigInterface $scopeConfig
     ) {
+        parent::__construct($context);
+        $this->_logger = $logger;
         $this->_moduleList = $moduleList;
         $this->_moduleManager = $moduleManager;
         $this->_packageInfo = $packageInfo;
         $this->_scopeConfig = $scopeConfig;
-        parent::__construct($context);
     }
 
     /**
@@ -124,12 +136,33 @@ class ModuleInfoHelper extends AbstractHelper
      *
      * @param string $package
      *
-     * @return string
+     * @return string|false
      */
-    public function GetPackagistUrl(string $package): string
+    public function getPackagistUrl(string $package): string
     {
-        $packagistUrl = sprintf('https://packagist.org/packages/%s', $package);
-        return $packagistUrl;
+        if ($package != "") {
+            $packagistUrl = sprintf('https://packagist.org/packages/%s', $package);
+
+            try {
+                $client = new Client();
+                $response = $client->get($packagistUrl);
+
+                if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+                    return $packagistUrl;
+                } else {
+                    $this->_logger->error(
+                        "URL '$packagistUrl' does not exist or encountered an error. Status code: " .
+                        $response->getStatusCode()
+                    );
+                    return false;
+                }
+            } catch (RequestException $e) {
+                $this->_logger->error("Failed to fetch URL '$packagistUrl': " . $e->getMessage());
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -137,29 +170,39 @@ class ModuleInfoHelper extends AbstractHelper
      *
      * @param string $package
      *
-     * @return string|null
+     * @return string|false
      *
      * @throws \Exception
      */
     public function fetchLatestVersion(string $package): ?string
     {
-        $packagistUrl = sprintf('https://repo.packagist.org/p2/%s.json', $package);
+        if ($package != "") {
+            $packagistUrl = sprintf('https://repo.packagist.org/p2/%s.json', $package);
 
-        try {
-            $client = new Client();
-            $response = $client->get($packagistUrl);
+            try {
+                $client = new Client();
+                $response = $client->get($packagistUrl);
 
-            //if ($response->getStatusCode() !== 200) {}
-
-            $data = json_decode($response->getBody(), true);
-
-            $versions = $data['packages'][$package];
-            $latestVersion = reset($versions)['version'];
-        } catch (\Exception $e) {
-            throw new \Exception(__('Failed to fetch latest version: %1', $e->getMessage()));
+                if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+                    $data = json_decode($response->getBody(), true);
+                    $versions = $data['packages'][$package];
+                    $latestVersion = reset($versions)['version'];
+                    return $latestVersion;
+                } else {
+                    $this->_logger->error(
+                        "URL '$packagistUrl' does not exist or encountered an error. Status code: " .
+                        $response->getStatusCode()
+                    );
+                    return false;
+                }
+            } catch (RequestException $e) {
+                $this->_logger->error("Failed to fetch latest version for package '$package': " . $e->getMessage());
+                /*throw new \Exception(__('Failed to fetch latest version: %1', $e->getMessage()));*/
+                return false;
+            }
+        } else {
+            return false;
         }
-
-        return $latestVersion;
     }
 
     /**
@@ -184,8 +227,13 @@ class ModuleInfoHelper extends AbstractHelper
      */
     public function getLatestModuleVersion(string $moduleName): ?string
     {
-        $configPathModuleName = 'pb' . str_replace('peterbrain', '', strtolower($moduleName)) . '/updater/latest_version';
-        $storedLatestVersion = $this->_scopeConfig->getValue($configPathModuleName, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, false);
+        $configPathModuleName = 'pb' .
+            str_replace('peterbrain', '', strtolower($moduleName)) . '/updater/latest_version';
+        $storedLatestVersion = $this->_scopeConfig->getValue(
+            $configPathModuleName,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+            false
+        );
         return $storedLatestVersion;
     }
 
@@ -274,13 +322,19 @@ class ModuleInfoHelper extends AbstractHelper
                 'disabled_modules' => [],
             ];
 
-            $this->_allModuleList['enabled_modules'] = array_map($createModuleInfo, array_filter($moduleList, function ($module) {
-                return $this->_moduleManager->isEnabled($module['name']);
-            }));
+            $this->_allModuleList['enabled_modules'] = array_map(
+                $createModuleInfo,
+                array_filter($moduleList, function ($module) {
+                    return $this->_moduleManager->isEnabled($module['name']);
+                })
+            );
 
-            $this->_allModuleList['disabled_modules'] = array_map($createModuleInfo, array_filter($moduleList, function ($module) {
-                return !$this->_moduleManager->isEnabled($module['name']);
-            }));
+            $this->_allModuleList['disabled_modules'] = array_map(
+                $createModuleInfo,
+                array_filter($moduleList, function ($module) {
+                    return !$this->_moduleManager->isEnabled($module['name']);
+                })
+            );
         }
 
         return $this->_allModuleList;
@@ -300,8 +354,14 @@ class ModuleInfoHelper extends AbstractHelper
                 return strpos($module['name'], 'Magento_') === 0;
             };
 
-            $this->_magentoModuleList['enabled_modules'] = array_filter($moduleList['enabled_modules'], $filterMagentoModules);
-            $this->_magentoModuleList['disabled_modules'] = array_filter($moduleList['disabled_modules'], $filterMagentoModules);
+            $this->_magentoModuleList['enabled_modules'] = array_filter(
+                $moduleList['enabled_modules'],
+                $filterMagentoModules
+            );
+            $this->_magentoModuleList['disabled_modules'] = array_filter(
+                $moduleList['disabled_modules'],
+                $filterMagentoModules
+            );
         }
 
         return $this->_magentoModuleList;
@@ -321,8 +381,14 @@ class ModuleInfoHelper extends AbstractHelper
                 return strpos($module['name'], 'Magento_') === false;
             };
 
-            $this->_nonMagentoModuleList['enabled_modules'] = array_filter($moduleList['enabled_modules'], $filterNonMagentoModules);
-            $this->_nonMagentoModuleList['disabled_modules'] = array_filter($moduleList['disabled_modules'], $filterNonMagentoModules);
+            $this->_nonMagentoModuleList['enabled_modules'] = array_filter(
+                $moduleList['enabled_modules'],
+                $filterNonMagentoModules
+            );
+            $this->_nonMagentoModuleList['disabled_modules'] = array_filter(
+                $moduleList['disabled_modules'],
+                $filterNonMagentoModules
+            );
         }
 
         return $this->_nonMagentoModuleList;

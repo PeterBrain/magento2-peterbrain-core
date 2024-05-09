@@ -1,244 +1,336 @@
 <?php
-$sysInfoHelper = $this->helper('PeterBrain\Core\Helper\SysInfoHelper');
-$moduleInfoHelper = $this->helper('PeterBrain\Core\Helper\ModuleInfoHelper');
+$sysInfoHelper = $block->getData('sysInfoHelper');
+$moduleInfoHelper = $block->getData('moduleInfoHelper');
 ?>
 
 <style>
-  table {
-    border-collapse: collapse;
-    margin: 0 0 32px;
-  }
+    :root {
+        --pb-grey: #ccc;
+        --pb-light-grey: #f3f3f3f3;
+        --pb-dark-grey: #333;
+    }
 
-  th, td {
-    vertical-align: top;
-    padding: 5px 15px;
-  }
+    table {
+        border-collapse: collapse;
+    }
 
-  td:first-child {
-    white-space: nowrap;
-    padding-left: 0;
-  }
-
-  td:nth-child(2) {
-    font-weight: 600;
-  }
-
-  td:last-child {
-    padding-right: 0;
-  }
-
-  .modules tr,
-  .modules th,
-  .modules td {
-    border: 1px solid #ccc;
-  }
-
-  .modules td:first-child {
-    padding-left: 15px;
-  }
-
-  .modules.enabled td:nth-child(n+2) {
-    text-align: center;
-  }
+    th, td {
+        vertical-align: top;
+        padding: 5px 15px;
+    }
 </style>
 
-<h2><?php echo __('System Information'); ?></h2>
-<h3>Magento</h3>
-<table>
-  <tbody>
-    <tr>
-      <td><?php echo __('Edition'); ?>:</td>
-      <td><?php /* @noEscape */ echo ucfirst($sysInfoHelper->getMagentoEdition()); ?></td>
-    </tr>
-    <tr>
-      <td><?php echo __('Version'); ?>:</td>
-      <td><?php /* @noEscape */ echo $sysInfoHelper->getMagentoVersion(); ?></td>
-    </tr>
-    <tr>
-      <td><?php echo __('Operation mode'); ?>:</td>
-      <td><?php /* @noEscape */ echo ucfirst($sysInfoHelper->getMagentoMode()); ?></td>
-    </tr>
-    <tr>
-      <td><?php echo __('Installation path'); ?>:</td>
-      <td><?php /* @noEscape */ echo $sysInfoHelper->getMagentoPath(); ?></td>
-    </tr>
-    <tr>
-      <td><?php echo __('Server date and time'); ?>:</td>
-      <td><?php /* @noEscape */ echo $sysInfoHelper->getServerTime(); ?></td>
-    </tr>
-    <tr>
-      <td><?php echo __('Server user'); ?>:</td>
-      <td><?php /* @noEscape */ echo $sysInfoHelper->getCurrentServerUser(); ?></td>
-    </tr>
-    <tr>
-      <td><?php echo __('Server user group'); ?>:</td>
-      <td><?php /* @noEscape */ echo $sysInfoHelper->getCurrentServerUserGroup(); ?></td>
-    </tr>
-  </tbody>
-</table>
+<style>
+    .sysinfo_grid {
+        display: grid;
+        grid-template-columns: auto;/* repeat(2, 1fr) */
+        grid-template-rows: auto;
+        grid-column-gap: 15px;
+        grid-row-gap: 15px;
+        grid-template-areas:
+            "magento php"
+            "database php";
+        justify-items: stretch;
+        align-items: stretch;
+        justify-content: center;
+        margin-bottom: 3rem;
+    }
 
-<h3>Database</h3>
-<table>
-  <tbody>
-    <tr>
-      <td><?php echo __('Version'); ?>:</td>
-      <td><?php /* @noEscape */ echo $sysInfoHelper->getDbVersion(); ?></td>
-    </tr>
-    <tr>
-      <td><?php echo __('Database time'); ?>:</td>
-      <td><?php /* @noEscape */ echo $sysInfoHelper->getDbTime(); ?></td>
-    </tr>
-  </tbody>
-</table>
+    .sysinfo_grid .sysinfo_item {
+        background-color: var(--pb-light-grey);
+        border-radius: 6px;
+        padding: 20px;
+        border: 1px solid var(--pb-grey);
+    }
 
-<h3>PHP</h3>
-<table>
-  <tbody>
-    <tr>
-      <td><?php echo __('Version'); ?>:</td>
-      <td><?php /* @noEscape */ echo phpversion(); ?></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Memory limit:</td>
-      <td><?php /* @noEscape */ echo ini_get('memory_limit'); ?></td>
-      <td>the maximum amount of memory in bytes that a script is allowed to allocate. This helps prevent poorly written scripts for eating up all available memory on a server.</td>
-    </tr>
-    <tr>
-      <td>Max. execution time:</td>
-      <td><?php /* @noEscape */ echo ini_get('max_execution_time'); ?></td>
-      <td>the maximum time in seconds a script is allowed to run before it is terminated by the parser. This helps prevent poorly written scripts from tying up the server.</td>
-    </tr>
-    <tr>
-      <td>Max. session lifetime:</td>
-      <td><?php /* @noEscape */ echo ini_get('session.gc_maxlifetime'); ?></td>
-      <td>specifies the number of seconds after which data will be seen as 'garbage' and potentially cleaned up. Be aware that the session lifetime value should be greater than Magento admin session lifetime unless you use Redis for session cache.</td>
-    </tr>
-    <tr>
-      <td>Max. input time:</td>
-      <td><?php /* @noEscape */ echo ini_get('max_input_time'); ?></td>
-      <td>the maximum time in seconds a script is allowed to parse input data, like POST and GET</td>
-    </tr>
-    <tr>
-      <td>Max. input vars:</td>
-      <td><?php /* @noEscape */ echo ini_get('max_input_vars'); ?></td>
-      <td>how many input variables may be accepted (limit is applied to $_GET, $_POST and $_COOKIE superglobal separately). Use of this directive mitigates the possibility of denial of service attacks which use hash collisions.</td>
-    </tr>
-    <tr>
-      <td>Max. file uploads:</td>
-      <td><?php /* @noEscape */ echo ini_get('max_file_uploads'); ?></td>
-      <td>the maximum number of files allowed to be uploaded simultaneously</td>
-    </tr>
-    <tr>
-      <td>Max. file size:</td>
-      <td><?php /* @noEscape */ echo ini_get('upload_max_filesize'); ?></td>
-      <td>the maximum size of an uploaded file in bytes</td>
-    </tr>
-    <tr>
-      <td>Max. POST size:</td>
-      <td><?php /* @noEscape */ echo ini_get('post_max_size'); ?></td>
-      <td>max size of post data allowed. This setting also affects file upload. To upload large files, this value must be greater than upload_max_filesize and should be at least as big as upload_max_filesize * max_file_uploads.</td>
-    </tr>
-    <tr>
-      <td>Display errors:</td>
-      <td><?php /* @noEscape */ echo ini_get('display_errors') ? "True" : "False"; ?></td>
-      <td>determines whether errors should be printed to the screen as part of the output or if they should be hidden from the user</td>
-    </tr>
-    <tr>
-      <td>Exposed:</td>
-      <td><?php /* @noEscape */ echo ini_get('expose_php') ? "True" : "False"; ?></td>
-      <td>when enabled, it exposes to the world that PHP is installed on the server, which includes the PHP version within the HTTP header</td>
-    </tr>
-    <tr>
-      <td>OpCache enabled:</td>
-      <td><?php /* @noEscape */ echo ini_get('opcache.enable') ? "True" : "False"; ?></td>
-      <td>when disabled, code is not optimised or cached</td>
-    </tr>
-  </tbody>
-</table>
+    .sysinfo_grid .sysinfo_item.magento {grid-area: magento;}
+    .sysinfo_grid .sysinfo_item.database {grid-area: database;}
+    .sysinfo_grid .sysinfo_item.php {grid-area: php;}
 
-<div>
-  <h3><?php echo __('Non-Magento Modules'); ?></h3>
-  <div style="display: flex;">
-    <div style="width: 50%;">
-      <h4><?php echo __('Enabled'); ?></h4>
-      <table class="modules non-magento enabled">
-        <thead>
-          <tr>
-            <th scope="col"><?php echo __('Module'); ?></th>
-            <th scope="col"><?php echo __('Version'); ?></th>
-            <th scope="col"><?php echo __('Setup Version'); ?></th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            /* @noEscape */
-            $modules = $moduleInfoHelper->getNonMagentoModuleList();
-            $modules_enabled = $modules['enabled_modules'];
+    .sysinfo_grid .sysinfo_item > h3 {
+        border-bottom: 1px solid var(--pb-grey);
+        padding-bottom: 6px;
+    }
 
-            $moduleList = array_map(function ($module) {
-              return '<tr><td>' . $module['name'] . '</td><td>' . ($module['version'] ?: '-') . '</td><td>' . ($module['setup_version'] ?: '-') . '</td></tr>';
-            }, $modules_enabled);
+    .sysinfo_grid .sysinfo_item table td:first-child {
+        white-space: nowrap;
+        padding-left: 0;
+    }
 
-            echo implode('', $moduleList);
-          ?>
-        </tbody>
-      </table>
+    .sysinfo_grid .sysinfo_item table td:nth-child(2) {
+        font-weight: 600;
+    }
+
+    .sysinfo_grid .sysinfo_item table td:last-child {
+        padding-right: 0;
+    }
+</style>
+
+<h2><?= /* @noEscape */ __('System Information'); ?></h2>
+<div class="sysinfo_grid">
+    <div class="sysinfo_item magento">
+        <h3>Magento</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td><?= /* @noEscape */ __('Edition'); ?>:</td>
+                    <td><?= $block->escapeHtml(ucfirst($sysInfoHelper->getMagentoEdition())); ?></td>
+                </tr>
+                <tr>
+                    <td><?= /* @noEscape */ __('Version'); ?>:</td>
+                    <td><?= $block->escapeHtml($sysInfoHelper->getMagentoVersion()); ?></td>
+                </tr>
+                <tr>
+                    <td><?= /* @noEscape */ __('Operation mode'); ?>:</td>
+                    <td><?= $block->escapeHtml(ucfirst($sysInfoHelper->getMagentoMode())); ?></td>
+                </tr>
+                <tr>
+                    <td><?= /* @noEscape */ __('Installation path'); ?>:</td>
+                    <td><?= $block->escapeHtml($sysInfoHelper->getMagentoPath()); ?></td>
+                </tr>
+                <tr>
+                    <td><?= /* @noEscape */ __('Server date and time'); ?>:</td>
+                    <td><?= $block->escapeHtml($sysInfoHelper->getServerTime()); ?></td>
+                </tr>
+                <tr>
+                    <td><?= /* @noEscape */ __('Server user'); ?>:</td>
+                    <td><?= $block->escapeHtml($sysInfoHelper->getCurrentServerUser()); ?></td>
+                </tr>
+                <tr>
+                    <td><?= /* @noEscape */ __('Server user group'); ?>:</td>
+                    <td><?= $block->escapeHtml($sysInfoHelper->getCurrentServerUserGroup()); ?></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div style="width: 50%;">
-      <h4><?php echo __('Disabled'); ?></h4>
-      <p>
-        <?php
-          $modules_disabled = $modules['disabled_modules'];
-          $moduleList = array_map(function ($module) {
-            return $module['name'];
-          }, $modules_disabled);
 
-          echo implode('<br>', $moduleList);
-        ?>
-      </p>
+    <div class="sysinfo_item database">
+        <h3>Database</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td><?= /* @noEscape */ __('Version'); ?>:</td>
+                    <td><?= $block->escapeHtml($sysInfoHelper->getDbVersion()); ?></td>
+                </tr>
+                <tr>
+                    <td><?= /* @noEscape */ __('Database time'); ?>:</td>
+                    <td><?= $block->escapeHtml($sysInfoHelper->getDbTime()); ?></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-  </div>
 
-  <h3><?php echo __('Magento Modules'); ?></h3>
-  <div style="display: flex;">
-    <div style="width: 50%;">
-      <h4><?php echo __('Enabled'); ?></h4>
-      <table class="modules magento enabled">
-        <thead>
-          <tr>
-            <th scope="col"><?php echo __('Module'); ?></th>
-            <th scope="col"><?php echo __('Version'); ?></th>
-            <th scope="col"><?php echo __('Setup Version'); ?></th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            /* @noEscape */
-            $modules = $moduleInfoHelper->getMagentoModuleList();
-            $modules_enabled = $modules['enabled_modules'];
-
-            $moduleList = array_map(function ($module) {
-              return '<tr><td>' . $module['name'] . '</td><td>' . ($module['version'] ?: '-') . '</td><td>' . ($module['setup_version'] ?: '-') . '</td></tr>';
-            }, $modules_enabled);
-
-            echo implode('', $moduleList);
-          ?>
-        </tbody>
-      </table>
+    <div class="sysinfo_item php">
+        <h3>PHP</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td><?= /* @noEscape */ __('Version'); ?>:</td>
+                    <td><?= $block->escapeHtml(phpversion()); ?></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Memory limit:</td>
+                    <td><?= $block->escapeHtml(ini_get('memory_limit')); ?></td>
+                    <td>the maximum amount of memory in bytes that a script is allowed to allocate.
+                        This helps prevent poorly written scripts for eating up all available memory on a server.</td>
+                </tr>
+                <tr>
+                    <td>Max. execution time:</td>
+                    <td><?= (int) ini_get('max_execution_time'); ?></td>
+                    <td>the maximum time in seconds a script is allowed to run before it is terminated by the parser.
+                        This helps prevent poorly written scripts from tying up the server.</td>
+                </tr>
+                <tr>
+                    <td>Max. session lifetime:</td>
+                    <td><?= (int) ini_get('session.gc_maxlifetime'); ?></td>
+                    <td>specifies the number of seconds after which data will be seen as 'garbage'
+                        and potentially cleaned up. Be aware that the session lifetime value should
+                        be greater than Magento admin session lifetime unless you use Redis for session cache.</td>
+                </tr>
+                <tr>
+                    <td>Max. input time:</td>
+                    <td><?= (int) ini_get('max_input_time'); ?></td>
+                    <td>the maximum time in seconds a script is allowed to parse input data, like POST and GET</td>
+                </tr>
+                <tr>
+                    <td>Max. input vars:</td>
+                    <td><?= (int) ini_get('max_input_vars'); ?></td>
+                    <td>how many input variables may be accepted (limit is applied to $_GET, $_POST and $_COOKIE
+                        superglobal separately). Use of this directive mitigates the possibility of
+                        denial of service attacks which use hash collisions.</td>
+                </tr>
+                <tr>
+                    <td>Max. file uploads:</td>
+                    <td><?= (int) ini_get('max_file_uploads'); ?></td>
+                    <td>the maximum number of files allowed to be uploaded simultaneously</td>
+                </tr>
+                <tr>
+                    <td>Max. file size:</td>
+                    <td><?= $block->escapeHtml(ini_get('upload_max_filesize')); ?></td>
+                    <td>the maximum size of an uploaded file in bytes</td>
+                </tr>
+                <tr>
+                    <td>Max. POST size:</td>
+                    <td><?= $block->escapeHtml(ini_get('post_max_size')); ?></td>
+                    <td>max size of post data allowed. This setting also affects file upload.
+                        To upload large files, this value must be greater than upload_max_filesize
+                        and should be at least as big as upload_max_filesize * max_file_uploads.</td>
+                </tr>
+                <tr>
+                    <td>Display errors:</td>
+                    <td><?= /* @noEscape */ ini_get('display_errors') ? "True" : "False"; ?></td>
+                    <td>determines whether errors should be printed to the screen as part of the output
+                        or if they should be hidden from the user</td>
+                </tr>
+                <tr>
+                    <td>Exposed:</td>
+                    <td><?= /* @noEscape */ ini_get('expose_php') ? "True" : "False"; ?></td>
+                    <td>when enabled, it exposes to the world that PHP is installed on the server,
+                        which includes the PHP version within the HTTP header</td>
+                </tr>
+                <tr>
+                    <td>OpCache enabled:</td>
+                    <td><?= /* @noEscape */ ini_get('opcache.enable') ? "True" : "False"; ?></td>
+                    <td>when disabled, code is not optimised or cached</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div style="width: 50%;">
-      <h4><?php echo __('Disabled'); ?></h4>
-      <p>
-        <?php
-          $modules_disabled = $modules['disabled_modules'];
-          $moduleList = array_map(function ($module) {
-            return $module['name'];
-          }, $modules_disabled);
+</div>
 
-          echo implode('<br>', $moduleList);
-        ?>
-      </p>
+<style>
+    .moduleinfo_container .moduleinfo_grid {
+        display: flex;
+        gap: 15px;
+        align-items: stretch;
+        justify-content: flex-start;
+        margin-bottom: 3rem;
+    }
+
+    .moduleinfo_container .moduleinfo_grid .moduleinfo_item {
+        width: auto;
+        background-color: var(--pb-light-grey);
+        border-radius: 6px;
+        padding: 20px;
+        border: 1px solid var(--pb-grey);
+    }
+
+    .moduleinfo_container .moduleinfo_grid .moduleinfo_item.description {
+        background-color: unset;
+    }
+
+    .moduleinfo_container .moduleinfo_grid .moduleinfo_item table tr,
+    .moduleinfo_container .moduleinfo_grid .moduleinfo_item table th,
+    .moduleinfo_container .moduleinfo_grid .moduleinfo_item table td {
+        border: 1px solid var(--pb-grey);
+        white-space: nowrap;
+    }
+
+    .moduleinfo_container .moduleinfo_grid .moduleinfo_item table td:nth-child(2) {
+        font-weight: 600;
+    }
+</style>
+
+<?php
+$nonMagentoModules = $moduleInfoHelper->getNonMagentoModuleList();
+$magentoModules = $moduleInfoHelper->getMagentoModuleList();
+
+$map_table = function ($module) {
+    return '<tr>
+        <td>' . $module['name'] . '</td>
+        <td>' . ($module['version'] ?: '-') . '</td>
+        <td>' . ($module['setup_version'] ?: '-') . '</td>
+    </tr>';
+};
+?>
+<h2><?= /* @noEscape */ __('Module Information'); ?></h2>
+<div class="moduleinfo_container">
+    <h3><?= /* @noEscape */ __('Non-Magento Modules'); ?></h3>
+    <div class="moduleinfo_grid non-magento">
+        <div class="moduleinfo_item modules_enabled">
+            <h4><?= /* @noEscape */ __('Enabled'); ?></h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col"><?= /* @noEscape */ __('Module'); ?></th>
+                        <th scope="col"><?= /* @noEscape */ __('Version'); ?></th>
+                        <th scope="col"><?= /* @noEscape */ __('Setup Version'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $moduleList = array_map($map_table, $nonMagentoModules['enabled_modules']);
+                    echo $block->escapeHtml(implode('', $moduleList), ['tr', 'td']);
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="moduleinfo_item modules_disabled">
+            <h4><?= /* @noEscape */ __('Disabled'); ?></h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col"><?= /* @noEscape */ __('Module'); ?></th>
+                        <th scope="col"><?= /* @noEscape */ __('Version'); ?></th>
+                        <th scope="col"><?= /* @noEscape */ __('Setup Version'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $moduleList = array_map($map_table, $nonMagentoModules['disabled_modules']);
+                    echo $block->escapeHtml(implode('', $moduleList), ['tr', 'td']);
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="moduleinfo_item description">
+            <p>The <b>setup_version</b> value represents the module's database schema version.
+                If a module uses Declarative Schema to help manage the installation and upgrade processes
+                for the component, then it's required to set the setup_version parameter in etc/module.xml.
+                Omit the setup_version parameter if you use Declarative Schema.</p>
+            <p>The <b>version</b> of the module is declared in composer.json, alongside its dependencies.
+                The output of the version of disabled modules is currently not supported.</p>
+        </div>
     </div>
-  </div>
+
+    <h3><?= /* @noEscape */ __('Magento Modules'); ?></h3>
+    <div class="moduleinfo_grid magento">
+        <div class="moduleinfo_item modules_enabled">
+            <h4><?= /* @noEscape */ __('Enabled'); ?></h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col"><?= /* @noEscape */ __('Module'); ?></th>
+                        <th scope="col"><?= /* @noEscape */ __('Version'); ?></th>
+                        <th scope="col"><?= /* @noEscape */ __('Setup Version'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $moduleList = array_map($map_table, $magentoModules['enabled_modules']);
+                    echo $block->escapeHtml(implode('', $moduleList), ['tr', 'td']);
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="moduleinfo_item modules_disabled">
+            <h4><?= /* @noEscape */ __('Disabled'); ?></h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col"><?= /* @noEscape */ __('Module'); ?></th>
+                        <th scope="col"><?= /* @noEscape */ __('Version'); ?></th>
+                        <th scope="col"><?= /* @noEscape */ __('Setup Version'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $moduleList = array_map($map_table, $magentoModules['disabled_modules']);
+                    echo $block->escapeHtml(implode('', $moduleList), ['tr', 'td']);
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

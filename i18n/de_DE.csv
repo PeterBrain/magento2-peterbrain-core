@@ -29,6 +29,7 @@
 "Module Version","Modul-Version"
 "Setup Version","Setup Version"
 "System Information","Systeminformation", module, PeterBrain_Core
+"Module Information","Modulinformation", module, PeterBrain_Core
 "Installed Modules","Installierte Module", module, PeterBrain_Core
 
 

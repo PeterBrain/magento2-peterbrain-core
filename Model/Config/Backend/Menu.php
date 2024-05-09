@@ -8,10 +8,10 @@ use Magento\Framework\App\Config\Value;
 
 /**
  * Class Menu
+ * menu cache invalidation
  *
  * @author PeterBrain <peter.loecker@live.at>
  * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
- * @package PeterBrain\Core\Model\Config\Backend
  */
 class Menu extends Value
 {

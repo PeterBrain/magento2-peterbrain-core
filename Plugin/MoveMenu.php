@@ -6,10 +6,10 @@ use PeterBrain\Core\Helper\CoreHelper;
 
 /**
  * Class MoveMenu
+ * show/hide menu entry
  *
  * @author PeterBrain <peter.loecker@live.at>
  * @copyright Copyright (c) PeterBrain (https://peterbrain.com/)
- * @package PeterBrain\Core\Plugin
  */
 class MoveMenu
 {
@@ -40,10 +40,15 @@ class MoveMenu
     public function afterExecute(AbstractCommand $subject, $itemParams)
     {
         if ($this->_coreHelper->getConfigGeneral('menu')) {
-            if (strpos($itemParams['id'], 'PeterBrain_') !== false && isset($itemParams['parent']) && strpos($itemParams['parent'], 'PeterBrain_') === false) {
+            if (strpos($itemParams['id'], 'PeterBrain_') !== false &&
+                isset($itemParams['parent']) &&
+                strpos($itemParams['parent'], 'PeterBrain_') === false
+            ) {
                 $itemParams['parent'] = self::MENU_ID;
             }
-        } elseif ((isset($itemParams['id']) && $itemParams['id'] === self::MENU_ID) || (isset($itemParams['parent']) && $itemParams['parent'] === self::MENU_ID)) {
+        } elseif ((isset($itemParams['id']) && $itemParams['id'] === self::MENU_ID) ||
+            (isset($itemParams['parent']) && $itemParams['parent'] === self::MENU_ID)
+        ) {
             $itemParams['removed'] = true;
         }
 
